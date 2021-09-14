@@ -63,7 +63,7 @@ def signup(request):
     
     if request.method == "POST":
         i =request.POST
-        add = Pearl_Users(firstname=i['firstname'], lastname=i['lastname'], username=i['username'],
+        add = Pearl_Users(first_name=i['firstname'], last_name=i['lastname'], username=i['username'],
             password=i['password'], dateofbirth=i['date_of_birth'], country=i['country'],
             mobile= (i['country-code']+i['mobile']), email= i['email'])
         add.save()

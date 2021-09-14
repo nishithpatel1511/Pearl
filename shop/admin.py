@@ -28,4 +28,4 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(customer)
-admin.site.register(Pearl_Users, UserAdmin)
+admin.site.register(Pearl_Users)

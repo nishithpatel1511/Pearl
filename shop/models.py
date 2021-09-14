@@ -57,23 +57,27 @@ class customer(models.Model):
         return self.username
 
 class Pearl_Users(AbstractUser):
-    firstname = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50, verbose_name="firstname")
+    last_name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
-    dateofbirth = models.DateField(default=now)
+    date_of_birth = models.DateField(default=now)
     country = models.CharField(max_length=30)
     mobile = models.CharField(max_length=14, unique=True)
     email = models.EmailField(unique=True)
+    password = models.CharField(max_length=16)
     is_superuser  = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_customer = models.BooleanField(default = True)
     is_authenticated =True
     is_anonymous = True
+    groups = None
+    user_permissions = None
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['firstname', 'lastname', 'country', 'mobile', 'email', 'dateofbirth']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'country', 'mobile', 'email', 'dateofbirth']
 
     def __str__(self):
         return self.username
     def get_username(self):
         return self.username
+    # def set_password(self, raw_password):
