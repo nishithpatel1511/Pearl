@@ -1,0 +1,432 @@
+{% extends 'shop/basics.html' %}
+{% block title %}Product View Page{% endblock %}
+{% block css %}
+<style type="text/css">
+  .product-view{
+  	width: 95%;
+  	margin: 10px 2.5%;
+    display: inline-flex;
+  }
+  .product-view-image{
+  	width: 45%;
+  	display: inline-flex;
+  }
+  .product-view-image-col{
+  	width: 64px;
+  }
+  .product-view-image-list{
+  	list-style: none;
+  	padding: 0;
+  	display: none;
+  }
+  .small-image-li{
+  	border: black solid 1px;
+  	margin: 15px 0;
+  	cursor: pointer;
+  	width: 60px;
+  	height: 60px;
+  	display: flex;
+  }
+  .small-image-li img{
+  	width: 100%;
+  	margin-top: auto;
+  	margin-bottom: auto;
+  }
+  
+  .product-view-image-final{
+  	width: 100%;
+  	margin-left: 5%;
+  	display: flex;
+  }
+  .product-view-image-final img{
+  	margin-top: auto;
+  	margin-bottom: auto;
+  	width: 100%;
+  }
+
+  .product-view-description{
+  	padding-left: 2.5%;
+  	width: 55%;
+  }
+  .product-view-description-price{
+  	margin-top: 20px;
+  	line-height: 0.2rem;
+  	display: none;
+  }
+  .product-color{
+  	display: inline-block;
+  	margin-left: 4px;
+  	padding: 0 1.5px;
+    
+  }
+  .product-color.active{
+  	border: black 1px solid;
+  }
+  .product-color img{
+  	width: 20px;
+  	height: 20px;
+  	border-radius: 10px;
+  	cursor: pointer;
+  	vertical-align: text-bottom;
+  }
+  .from-manufacturer{
+  	margin: 10px 2.5%;
+  }
+
+
+  /*New Begin from Here*/
+  .product-view-image-list.active{
+  	display: block;
+  }
+  .product-view-image-list.active .small-image-li.active{
+  	border-color: orange;
+  	border-width: 2px;
+  }
+  .product-sizes,
+  .product-rams{
+  	display: inline-flex;
+  }
+  .product-sizes div,
+  .product-rams div{
+  	border: 1px solid black;
+  	padding: 0px 3px;
+    border-radius: 5px;
+    margin-right: 20px;
+    margin-top: 5px;
+    margin-bottom: 7.5px;
+    cursor: pointer;
+  }
+  .product-sizes .active,
+  .product-rams .active{
+  	background-color: #0dcaf0;
+  	border-color: #0dcaf0;
+  }
+  .product-view-description-price.active{
+  	display: block;
+  }
+  .product-save-price{
+  	display: none;
+  }
+  .product-save-price.active{
+  	display: block;
+  }
+  .product-mrp span{
+  	text-decoration: line-through !important;
+  }
+  .product-view-description-features,
+  .product-view-description-details,
+  .product-view-description-size{
+  	margin-top: 15px;
+  }
+  h5{
+  	margin-bottom: 3px;
+  }
+  .images-control{
+  	display: none;
+  }
+
+  .my-sliderbuttons{
+      box-sizing: content-box;
+      flex: 0 1 auto;
+      width: 30px;
+      height: 3px;
+      padding: 0;
+      margin-right: 3px;
+      margin-left: 3px;
+      text-indent: -999px;
+      cursor: pointer;
+      background-color: #000;
+      background-clip: padding-box;
+      border: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      opacity: .3;
+      transition: opacity .6s ease;
+    }
+    .my-sliderbuttons.active{
+      opacity: 1;
+    }
+    .product-view-description-title.big{
+    	display: block;
+    }
+    .product-view-description-title.small{
+    	display: none;
+    }
+  /* Responsive Design */
+  @media(max-width: 991.8px)
+  {
+  	.images-control.active{
+  	  display: inline-flex;
+    }
+
+    .product-view{
+    	display: block;
+    }
+    .product-view-image-col{
+    	display: none!important;
+    }
+    .product-view-image{
+    	display: block;
+    	width: 100%;
+    }
+    .product-view-image-final{
+    	width: 100%;
+    	/*height: 400px;*/
+    	max-width: 400px;
+    	padding-left: 5%;
+    	padding-right: 5%;
+    	margin-left: auto;
+      margin-right: auto;
+    }
+
+    .images-control{
+    	width: 100%;
+    	justify-content: safe center;
+    }
+    .product-view-description-title.big{
+    	display: none;
+    }
+    .product-view-description-title.small{
+    	text-align: center;
+    	display: block;
+    }
+    .product-view-description{
+    	width: 100%;
+    }
+  }
+</style>
+{% endblock %}
+{% block body %}
+
+<div class="product-main-view">
+	
+	<div class="product-view">
+		<div class="product-view-description-title small">
+		  <h3>{{product.0.product_name}}</h3>
+    </div>
+		<div class="product-view-image">
+			<div class="product-view-image-col">
+				<!-- Product small images lists -->
+					{% for i in product_images %}
+					  <ul class="product-view-image-list" id= "{{forloop.counter}}">
+		            {%for j in i %}
+					        <li class="small-image-li">
+					        	  <img src="/media/{{j}}">
+					        </li>
+               	{% endfor %}
+			      </ul>
+
+			      
+					{% endfor %}
+			</div>
+			
+			<!-- Product Big image -->
+			<div class="product-view-image-final">
+				<img src="/media/{{product_images.0.0}}">
+			</div>
+
+      {% for i in product_images %}	
+      <div class="images-control" id="control_{{forloop.counter}}">
+			  {%for j in i %}
+			    {% if forloop.counter == 1 %}
+				   <button type="button" class="my-sliderbuttons active" id="ctrl_btn_{{forloop.counter}}"></button>
+				  {% else %}
+				   <button type="button" class="my-sliderbuttons" id="ctrl_btn_{{forloop.counter}}"></button>
+				  {% endif %}
+        {% endfor %}
+			</div>
+			{% endfor %}
+		</div>
+
+		<div class="product-view-description">
+			<div class="product-view-description-title big">
+				<h3>{{product.0.product_name}}</h3>
+			</div>
+
+			<!-- Price of Product -->
+			<div class="product-view-description-price" id="price">
+				<p class="product-price"><b>Price:</b> &#x20B9; <span>{{product.0.base_price}}</span></p>
+				<p class="product-mrp"><b>M.R.P.:</b> &#x20B9; <span>{{product.0.base_mrp}}</span></p>
+				<p class="product-yousave"><b>You Save: </b><span></span>%</p>
+			</div>
+
+      <!-- Colours of the Product -->
+			<h5>Available colors:</h5>
+			<div class="product-view-description-color">
+				{% for i in product.0.ProductColor.all %}
+				<div class="product-color" id = "color_{{forloop.counter}}"><!-- change -->
+					<img src="/media/{{i.color}}">
+				</div>
+				{% endfor %}
+			</div>
+
+			<!-- sizes of the Product -->
+			<div class="product-view-description-size">
+				<h5>Storage:</h5>
+				<div class="product-size">
+					Size Name: <span>{{product.0.ProductMemoryRom.all.0.rom}} GB</span>
+				</div>
+				<div class="product-sizes">
+					{% for i in product.0.ProductMemoryRom.all %}
+					<div>{{i.rom}} GB</div> <!-- change -->
+					{% endfor %}
+				</div>
+			</div>
+      
+     <!-- Ram option of the Product -->
+			{% if product.0.display_ram %}
+			<div class="product-view-description-ram">
+				<h5>Ram:</h5>
+				<div class="product-ram">
+					Ram Size: <span>{{product.0.base_ram}} GB</span>
+				</div>
+				<div class="product-rams">
+					{% for i in product.0.ProductMemoryRam.all %}
+					<div>{{i.ram}} GB</div><!-- change -->
+					{% endfor %}
+				</div>
+			</div>
+			{% endif %}
+
+			<div class="product-view-description-details">
+				<h5>Basic Details:</h5>
+				<div class="product-model"><span><b>Model:</b> {{product.0.product_name}}</span></div>
+				<div class="product-brand"><span><b>Brand:</b> Apple</span></div>
+				<div class="product-formfactor"><span><b>Form Factor:</b> Smart Phone</span></div>
+			</div>
+			<div class="product-view-description-features">
+			  <h5>Features of the Item:</h5>
+				<ul class="product-features">
+					<li class="product-feature">6.1-inch (15.5 cm diagonal) Super Retina XDR display</li>
+					<li class="product-feature">Ceramic Shield, tougher than any smartphone glass</li>
+					<li class="product-feature">A14 Bionic chip, the fastest chip ever in a smartphone</li>
+					<li class="product-feature">Advanced dual-camera system with 12MP Ultra Wide and Wide cameras; Night mode, Deep Fusion, Smart HDR 3, 4K Dolby Vision HDR recording 12MP TrueDepth front camera with Night mode, 4K Dolby Vision HDR recording</li>
+					<li class="product-feature">Industry-leading IP68 water resistance</li>
+					<li class="product-feature">Supports MagSafe accessories for easy attach and faster wireless charging</li>
+					<li class="product-feature">iOS with redesigned widgets on the Home screen, all-new App Library, App Clips and more</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="from-manufacturer">
+	<div class="specifications">
+		<h5>From Manufacturer:</h5>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block jquery %}
+<script type="text/javascript">
+
+  // give basic active classes
+  rom = {{rom|safe}};
+  ram = {{ram|safe}};
+  price = {{product.0.base_price|safe}};
+  mrp = {{product.0.base_mrp|safe}};
+  $('.product-view-image-list').first().addClass('active');
+	$('.product-view-image-list.active li').first().addClass('active');
+	$('.product-color').first().addClass('active');
+  $('.product-sizes div').first().addClass('active');
+  $('.product-rams div').first().addClass('active');
+  $('.product-view-description-price').first().addClass('active');
+  $('.product-save-price').first().addClass('active');
+  $('.product-yousave span').text(((mrp-price)*100/mrp).toFixed(2));
+  $('.images-control').first().addClass('active');
+  $('.product-view-image-final').css("height",$('.product-view-image-final').width());
+
+  // changing the color
+	$('.product-color img').click(function(){
+		id = ($(this).parent().attr("id")).split("_")[1];
+		images = ".product-view-image-list#"+id;
+		control = ".images-control#control_"+id;
+		$(".product-view-image-list.active").removeClass("active");
+		$('.images-control.active').removeClass('active');
+
+		$(".product-view-image-list.active .active").removeClass("active");
+		$('.images-control.active .active').removeClass('active');
+
+		$(images).addClass('active');
+		$(control).addClass('active');
+		$(images+' li').first().addClass('active');
+		$(control+' button').first().addClass('active');
+
+		$('.product-view-image-final img').attr("src",$(images+" li img").attr("src"));
+		$('.product-color.active').removeClass('active');
+		$(this).parent().addClass('active');
+		
+	});
+ 
+  // changing the images
+	$(".small-image-li").click(function(){
+		$(".small-image-li.active").removeClass('active');
+		$(this).addClass('active');
+		$('.product-view-image-final img').attr("src",$(this).find('img').attr("src"));
+
+	});
+
+  // changig the size of the rom
+	$('.product-sizes div').click(function(){
+		previous_price = rom[($('.product-sizes .active').text()).split(" ")[0]].price;
+		current_price = rom[($(this).text()).split(" ")[0]].price;
+		previous_mrp = rom[($('.product-sizes .active').text()).split(" ")[0]].mrp;
+		current_mrp = rom[($(this).text()).split(" ")[0]].mrp;
+		price = parseInt($('.product-price span').text()) - previous_price + current_price;
+		mrp = parseInt($('.product-mrp span').text()) - previous_mrp + current_mrp;
+		$('.product-sizes .active').removeClass("active");
+		$(this).addClass('active');
+		$('.product-size span').text($(this).text());
+		$('.product-price span').text(price);
+		$('.product-mrp span').text(mrp);
+    $('.product-yousave span').text(((mrp-price)*100/mrp).toFixed(2));
+	});
+  
+  // changing the size of ram
+	$('.product-rams div').click(function(){
+		previous_price = ram[($('.product-rams .active').text()).split(" ")[0]].price;
+		current_price = ram[($(this).text()).split(" ")[0]].price;
+		previous_mrp = ram[($('.product-rams .active').text()).split(" ")[0]].mrp;
+		current_mrp = ram[($(this).text()).split(" ")[0]].mrp; 
+		price = parseInt($('.product-price span').text()) - previous_price + current_price;
+		mrp = parseInt($('.product-mrp span').text()) - previous_mrp + current_mrp;
+		$('.product-rams .active').removeClass("active");
+		$(this).addClass('active');
+		$('.product-ram span').text($(this).text());
+		$('.product-price span').text(price);
+		$('.product-mrp span').text(mrp);
+    $('.product-yousave span').text(((mrp-price)*100/mrp).toFixed(2));
+	});
+
+
+  $('.product-view-image-final').on('touchstart', function(e)
+  {
+    startx = e.touches[0].clientX;
+    starty = e.touches[0].clientY;
+  });
+
+  $('.product-view-image-final').on('touchend', function(e){
+    endy = e.changedTouches[0].clientY;
+    endx = e.changedTouches[0].clientX;
+    diffx = Math.abs(endx - startx);
+    diffy = Math.abs(endy - starty);
+    if (diffx > diffy) {
+      if (startx < endx) {
+      	$('.images-control.active .active').prev().click();
+      }
+      else if (startx > endx) {
+      	
+      	$('.images-control.active .active').next().click(); 
+      }
+    }
+  });
+
+	$('.images-control button').click(function (){
+		$('.images-control .active').removeClass('active');
+		$(this).addClass('active');
+		id = ($(this).attr('id')).split("_")[2];
+		$('.product-view-image-list.active').find('.small-image-li:nth-child('+id+')').click();
+	});
+
+</script>
+{% endblock %}

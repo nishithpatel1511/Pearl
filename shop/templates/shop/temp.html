@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <title>{% block title %}{% endblock %}</title>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+  <style type="text/css">
+    * {
+      text-decoration: none !important;
+      letter-spacing: 0.40px;
+    }
+
+    .nav-sm {
+      display: none;
+      height: 0;
+      transition: 5s;
+      width: 100%;
+      background-color: black;
+    }
+
+    .nav-sm.active {
+      overflow: hidden;
+      position: fixed;
+      display: block;
+      height: 100%;
+      transition: 5s;
+      z-index: 1021;
+    }
+
+    .nav-sm>.container-fluid {
+      justify-content: center;
+    }
+
+    .menubar-close img {
+      position: absolute;
+      left: 4%;
+      top: 10px;
+      height: 20px;
+      width: 20px;
+    }
+
+    .nav-brand-sm {
+      font-size: 2rem;
+      text-decoration: none;
+      text-align: center;
+      color: white !important;
+    }
+
+    .search-sm {
+      background-color: black;
+    }
+
+    .search-sm.active {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      padding-top: 1.5rem;
+    }
+
+    .search-panel-sm {
+      width: 80%;
+      margin: 10px 10%;
+      display: inline-flex;
+    }
+
+    .search-panel-sm .search-icon-sm {
+      display: inline-flex;
+      flex-grow: 1;
+      border-radius: 8px;
+      background-color: #212529;
+      padding: 0px 10px;
+    }
+
+    .search-svg-sm img {
+      height: 15px !important;
+      width: 15px !important;
+      cursor: pointer;
+    }
+
+    .search-panel-sm .search-icon-sm input,
+    .search-panel-sm .search-icon-sm input:focus {
+      background-color: #212529 !important;
+      color: white !important;
+      border: none;
+      outline: none !important;
+      width: 100%;
+    }
+
+    .demo-search-text {
+      margin-left: 7.5px;
+      color: rgba(255, 255, 255, .55) !important;
+    }
+
+    .search-close-sm {
+      padding-left: 10px;
+      color: lightskyblue !important;
+      cursor: pointer;
+    }
+
+    .search-result-sm {
+      width: 80% !important;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .menubar-sm {
+      margin: 15px 10px;
+    }
+
+    .menubar-sm .navbar-nav {
+      text-align: center;
+    }
+
+    .navbar {
+      margin-bottom: 10px;
+      padding-top: .2rem;
+      padding-bottom: .2rem;
+    }
+
+    .menubar-button {
+      margin-left: 3%;
+      height: 20px;
+      width: 20px;
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      margin-left: 1rem;
+    }
+
+    .menubar {
+      width: 80%;
+      margin-right: auto;
+      transition: 0.5s;
+    }
+
+    .menubar ul {
+      justify-content: space-around;
+    }
+
+    .user-icons {
+      display: inline-flex;
+      transition: all 0.3s linear 0s;
+    }
+
+    .search-panel {
+      margin-left: auto;
+      margin-right: auto;
+      display: inline-flex;
+      margin-bottom: -5px;
+      max-width: 60%;
+    }
+
+    .search-icon img {
+      height: 20px;
+      width: 20px;
+      cursor: pointer;
+    }
+
+    .search-bar {
+      display: none;
+      margin-left: 20px;
+      margin-right: auto;
+      width: 100%;
+    }
+
+    .search-bar.active {
+      display: inline-flex;
+    }
+
+    .search-input {
+      flex-grow: 1;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .search-input input:focus {
+      outline: none !important;
+    }
+
+    .search-text {
+      width: 100%;
+      height: 30px;
+      margin-right: 10px;
+      color: white !important;
+      background-color: #212529 !important;
+      border: none;
+      border-bottom: 1px solid white;
+      border-radius: 0px;
+      letter-spacing: 0.55px;
+    }
+
+    .search-result {
+      background-color: #f5f5f5;
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 18px;
+      margin-top: 10px;
+      padding: 15px 20px;
+      text-align: center;
+    }
+
+    .search-close {
+      font-family: sans-serif;
+      color: deepskyblue !important;
+      margin-top: auto;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .cart-btn {
+      height: 24px;
+      margin-left: 20px;
+      margin-right: 15px;
+      padding-right: 4.5px;
+      text-decoration: none;
+      color: black;
+      text-align: center;
+    }
+
+    .cart-logo {
+      width: 20px;
+      height: 20px;
+    }
+
+    .cart-no {
+      margin-left: -4px;
+      position: absolute;
+      background: lightgray;
+      border-radius: 50%;
+      font-size: 10px;
+      padding: 0 4.5px;
+      top: 11px;
+      font-weight: bolder;
+    }
+
+    .user-btn {
+      height: 24px;
+      width: 24px;
+      cursor: pointer;
+    }
+
+    .user-btn img {
+      width: 20px;
+      height: 20px;
+    }
+
+    /*general*/
+    .back-black {
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      z-index: 1019;
+      margin-top: -10px;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .no-scroll {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .hide {
+      display: none !important;
+      height: 0px !important;
+    }
+
+    .my-popover {
+      display: none;
+    }
+
+    .my-popover.active {
+      display: block;
+    }
+
+    .my-popover img {
+      margin-top: -12px;
+    }
+
+    .my-popover-box {
+      position: absolute;
+      right: 10px;
+      width: 300px;
+      margin-top: -14px;
+      border-radius: 5px;
+      background-color: lightgray;
+      padding-bottom: 25px;
+    }
+
+    /*new work from here*/
+
+    .login-box {
+      display: none;
+      text-align: center;
+      margin: 0;
+      z-index: 1021;
+      top: 0;
+    }
+
+    .login-box.active {
+      display: flex;
+    }
+
+    .login-input-box {
+      width: 400px;
+      margin: auto;
+      height: 300px;
+      border-radius: 20px;
+      background-color: whitesmoke;
+      padding-top: 10px;
+    }
+
+    .login-form {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      margin-top: 12.5px;
+      margin-bottom: 20px;
+    }
+
+    .login-form input {
+      width: 80%;
+      height: 30px;
+      margin-right: 10px;
+      border: none;
+      border-bottom: solid;
+      border-width: 1.5px;
+      border-color: black;
+      border-radius: 0px;
+      letter-spacing: 0.55px;
+      background: none !important;
+    }
+
+    .login-form input:focus,
+    .login-form select:focus {
+      outline: none !important;
+      border-color: skyblue !important;
+      border-width: 2px;
+      transition: 1s;
+    }
+
+    .btn-login {
+      /*color: #fff;*/
+      color: black;
+      background-color: lightskyblue;
+      border-color: lightskyblue;
+      border-radius: 5px;
+    }
+
+    .login-input-box .er-msg-login {
+      margin-top: 8px;
+      font-size: x-small;
+      color: red;
+      font-weight: bolder;
+      visibility: hidden;
+      margin-bottom: 3px;
+    }
+
+    .close-login {
+      text-align: end;
+      color: black;
+      margin-right: 20px;
+      font-size: large;
+    }
+    .close-login-btn{
+      cursor: pointer;
+      height: 20px;
+      width: 20px;
+      background-color: black;
+      border-radius: 50%;
+      margin-left: auto;
+    }
+    @media (max-width: 400px) {
+      .login-input-box {
+        width: 96%;
+      }
+    }
+  </style>
+  {% block css %}{% endblock %}
+</head>
+
+<body>
+  {% load static %}
+  <nav class="navbar navbar-dark nav-sm d-lg-none">
+    <div class="container-fluid">
+      <a type="button" class="menubar-close">
+        <img src="{% static 'shop/svgs/close.svg' %}">
+      </a>
+      <a class="nav-brand-sm" href="">Pearl</a>
+    </div>
+
+    <div class="search-sm">
+      <div class="search-panel-sm">
+        <div class="search-icon-sm deactive" href="#">
+          <a class="search-svg-sm">
+            <img src="{% static '/shop/svgs/search.svg' %}">
+          </a>
+          <input class="demo-search-text" placeholder="Search">
+        </div>
+        <a class="search-close-sm hide">cancel</a>
+      </div>
+      <div class="search-result-sm hide" style="color:white;">No Result Found</div>
+    </div>
+    <div class="menubar-sm">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Mobile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Laptop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Tablet</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Desktop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Watch</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">TV</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Music</a>
+        </li>
+        <li class="nav-item d-lg-none">
+          <a class="nav-link" href="#">Cart(<span id="cart2">0</span>)</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a type="button" class="menubar-button d-lg-none">
+        <img src="{% static 'shop/svgs/menubar.svg' %}">
+      </a>
+      <a class="navbar-brand" href="/shop/">Pearl</a>
+      <div class="menubar d-none d-lg-block">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/shop/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Mobile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Laptop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Tablet</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Desktop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Watch</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">TV</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Music</a>
+          </li>
+        </ul>
+      </div>
+      <div class="user-icons">
+        <div class="search-panel bg-dark d-none d-lg-flex">
+          <a class="search-icon disable" href="#">
+            <img src="{% static '/shop/svgs/search.svg' %}">
+          </a>
+          <div class="search-bar">
+            <form class="search-input">
+              <input class="search-text" type="search" placeholder="Search" aria-label="Search">
+              <div class="search-result">No Result Found</div>
+            </form>
+            <a class="search-close">cancel</a>
+          </div>
+
+        </div>
+        <!-- <a tabindex="0" id="example" class="btn btn-lg btn-danger popover-dismiss" >Dismissible popover</a> -->
+        <a class="cart-btn" href="#">
+          <img class="cart-logo" src="{% static 'shop/svgs/bag.svg' %}">
+          <span id="cart1" class="cart-no">0</span>
+          <div class="my-popover">
+            <img src="{% static 'shop/svgs/uparr.svg' %}">
+            <div class="my-popover-box">
+
+            </div>
+          </div>
+        </a>
+
+        <div class="user-btn">
+          <img src="{% static '/shop/svgs/user.svg' %}">
+          <div class="my-popover">
+            <img src="{% static 'shop/svgs/uparr.svg' %}">
+            <div class="my-popover-box">
+              <h5 class="user-fname" style="text-decoration: none;text-align: center;color: black; margin-top: 10px;">
+                Not Logged In</h5>
+              <div style="text-align: center;"><a class="login-btn ">Log in</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="search-background d-none d-lg-block"></div>
+
+  <div class="login-box back-black">
+    <div class="login-input-box">
+      <div class="close-login">
+          <img  class="close-login-btn" src="{% static 'shop/svgs/close.svg' %}">
+      </div>
+      <form class="login-form" onsubmit="event.preventDefault(); login_user();" autocomplete="off">
+        <input type="input" id="uname" name="username" placeholder="Username" autocomplete="">
+        </br></br>
+        <input type="password" id="passwd" name="password" placeholder="Password" autocomplete="nope">
+        </br></br>
+        <button class="btn-login">LogIn</button>
+        <p class="er-msg-login">Invalid Username and Password</p>
+        <div style="margin-top: 10px"><a href="" style="color:blue">Forgot Password?</a></div>
+        <div style="margin-top: 10px;"><a href="" style="color:blue">New User? SignUp</a></div>
+      </form>
+
+    </div>
+  </div>
+
+  {% block body %}{% endblock %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    if (localStorage.getItem('cart') == null)
+      var cart = {};
+    else {
+      cart = JSON.parse(localStorage.getItem('cart'));
+      document.getElementById('cart1').innerHTML = Object.keys(cart).length;
+      document.getElementById('cart2').innerHTML = Object.keys(cart).length;
+    }
+    $('.add-cart').click(function () {
+      var prodid = this.id.toString();
+      if (cart[prodid] != undefined)
+        cart[prodid] = cart[prodid] + 1;
+      else
+        cart[prodid] = 1;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      document.getElementById('cart1').innerHTML = Object.keys(cart).length;
+      document.getElementById('cart2').innerHTML = Object.keys(cart).length;
+    });
+
+    //logic for search
+    $('.search-panel .search-icon.disable').click(function () {
+      $(this).removeClass('disable');
+      $(this).addClass('enable');
+      $(this).parent().css('flex', '1 0 auto');
+      $(this).parent().parent().css('flex', '1 0 auto');
+      $(this).parent().find('.search-bar').addClass('active');
+      $(this).parent().parent().parent().find('.menubar').addClass('hide');
+      $('.search-background').addClass('back-black');
+      $('body').addClass('no-scroll');
+    });
+    $('.search-panel .search-icon.enable').click(function () {
+    });
+
+    $('.search-close').click(function () {
+      $(this).parent().removeClass('active');
+      $(this).parent().parent().css('flex', '0 0 auto');
+      $(this).parent().parent().parent().css('flex', '0 0 auto');
+      $(this).addClass('disable');
+      $(this).removeClass('enable');
+      $(this).parent().parent().parent().parent().find('.menubar').removeClass('hide');
+      $('.search-background').removeClass('back-black');
+      $('body').removeClass('no-scroll');
+    });
+    $('.search-background').click(function () {
+      $('.search-close').click();
+    });
+
+
+    $('.menubar-button').click(function () {
+      $('.nav-sm').addClass('active');
+      $('body').addClass('no-scroll');
+    });
+    $('.menubar-close').click(function () {
+      $('.nav-sm').removeClass('active');
+      $('body').removeClass('no-scroll');
+    });
+
+
+    $('.search-icon-sm.deactive').click(function () {
+      $(this).removeClass('deactive');
+      $('.search-sm').addClass('active');
+      $('.nav-sm .container-fluid, .menubar-sm').addClass('hide');
+      $('.search-close-sm, .search-result-sm').removeClass('hide');
+      $('.search-close-sm, .search-result-sm').removeClass('hide');
+      $('.search-svg-sm').addClass("available");
+    });
+    $('.search-close-sm').click(function () {
+      $(this).toggleClass('hide');
+      $('.search-sm').removeClass('active');
+      $('.search-result-sm').addClass('hide');
+      $('.nav-sm .container-fluid, .menubar-sm').removeClass('hide');
+      $('.search-close-sm, .search-result-sm').addClass('hide');
+      $('.search-svg-sm').removeClass("available");
+    });
+    $('.search-svg-sm').click(function () {
+      if ($(this).hasClass('available')) {
+        alert('now search');
+      }
+    });
+
+    var popover = new bootstrap.Popover(document.querySelector('.cart-btn'));
+
+    $('.user-btn').click(function () {
+      $(this).find('.my-popover').toggleClass('active');
+    });
+    $('.cart-btn').click(function () {
+      $(this).find('.my-popover').toggleClass('active');
+    });
+
+    $('.login-btn').click(function () {
+      $('.login-box').addClass('active');
+    });
+    $('.close-login-btn').click(function () {
+      $('.login-box').removeClass('active');
+    });
+
+    var login_user = function () {
+      $.ajax({
+        type: 'POST',
+        url: '/shop/login/',
+        data: {
+          username_login: $('#uname').val(),
+          password_login: $('#passwd').val()
+        },
+        success: function (data) {
+          if (data == 'valid') {
+            $('.er-msg-login').css('visibility', 'hidden');
+            alert("login success")
+          }
+          else if (data == 'invalid') {
+            $('.er-msg-login').css('visibility', 'visible');
+          }
+          else {
+            $('.er-msg-login').css('visibility', 'visible');
+          }
+        }
+      });
+    };
+  </script>
+  {% block jquery %}{% endblock %}
+</body>
+
+</html>

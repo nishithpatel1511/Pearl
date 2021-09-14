@@ -1,0 +1,893 @@
+{% extends 'shop/basics.html' %}
+
+{% block title %} Sign Up {% endblock %}
+{% block css %}
+<style type="text/css">
+    input[type="date"]::-webkit-calendar-picker-indicator {
+    
+    }
+    .cid-heading {
+        margin-top: 4vh;
+        text-align: center;
+    }
+
+    .signup-form {
+        margin-top: 5vh;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .signup-form input,
+    .signup-form select {
+        width: 80%;
+        height: 30px;
+        margin-right: 10px;
+        border: none;
+        border-bottom: solid;
+        border-width: 1.5px;
+        border-color: black;
+        border-radius: 0px;
+        letter-spacing: 0.55px;
+        background: none;
+    }
+
+    .signup-form input:focus,
+    .signup-form select:focus {
+        outline: none !important;
+        border-color: skyblue !important;
+        border-width: 2px;
+        transition: 1s;
+    }
+
+    .signup-form input[type=number]::-webkit-inner-spin-button,
+    .signup-form input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .btn-submit {
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        border-radius: 5px;
+    }
+
+    @media (max-width: 576.99px) {
+        .signup-form {
+            width: 80%;
+        }
+    }
+
+    .signup-form .er-msg-signup {
+        font-size: x-small;
+        color: red;
+        visibility: hidden;
+        margin-bottom: 3px;
+    }
+
+    .international-number-signup {
+        display: inline-flex;
+        width: 80%;
+        margin-left: 22.5px;
+    }
+
+    .international-number-signup select {
+        margin-left: -5px;
+        width: 35%;
+    }
+
+    .international-number-signup input {
+        margin-right: 5px;
+    }
+    .uname-loading,
+    .email-loading, 
+    .mobile-loading{
+        height: 22.5px;
+        visibility: hidden;
+    }
+    #uname-signup,
+    #email-signup{
+        margin-left: 22.5px;
+    }
+
+    .er-msg-signup.green{
+        color: green!important;
+    }
+
+</style>
+{% endblock %}
+{% block body %}
+<h2 class="cid-heading">Create Your Pearl Id</h2>
+{% csrf_token %}
+<form action="/shop/signup/" autocomplete="off" method="post" class="signup-form">
+    {% csrf_token %}
+    <input type="input" id="fname-signup" name="firstname" placeholder="First Name">
+    <p class="fname-signup er-msg-signup"></p></br>
+    <input type="input" id="lname-signup" name="lastname" placeholder="Last Name">
+    <p class="lname-signup er-msg-signup"></p></br>
+    <select name="country" id="country-signup">
+        <option disabled="true" selected="true">Select Your Country</option>
+        <option value="Afghanistan">Afghanistan</option>
+        <option value="Åland Islands">Åland Islands</option>
+        <option value="Albania">Albania</option>
+        <option value="Algeria">Algeria</option>
+        <option value="American Samoa">American Samoa</option>
+        <option value="Andorra">Andorra</option>
+        <option value="Angola">Angola</option>
+        <option value="Anguilla">Anguilla</option>
+        <option value="Antarctica">Antarctica</option>
+        <option value="Antigua &amp; Barbuda">Antigua &amp; Barbuda</option>
+        <option value="Argentina">Argentina</option>
+        <option value="Armenia">Armenia</option>
+        <option value="Aruba">Aruba</option>
+        <option value="Australia">Australia</option>
+        <option value="Austria">Austria</option>
+        <option value="Azerbaijan">Azerbaijan</option>
+        <option value="Bahamas">Bahamas</option>
+        <option value="Bahrain">Bahrain</option>
+        <option value="Bangladesh">Bangladesh</option>
+        <option value="Barbados">Barbados</option>
+        <option value="Belarus">Belarus</option>
+        <option value="Belgium">Belgium</option>
+        <option value="Belize">Belize</option>
+        <option value="Benin">Benin</option>
+        <option value="Bermuda">Bermuda</option>
+        <option value="Bhutan">Bhutan</option>
+        <option value="Bolivia">Bolivia</option>
+        <option value="Bosnia &amp; Herzegovina">Bosnia &amp; Herzegovina</option>
+        <option value="Botswana">Botswana</option>
+        <option value="Bouvet Island">Bouvet Island</option>
+        <option value="Brazil">Brazil</option>
+        <option value="British Indian Ocean Territory">British Indian Ocean Territory</option>
+        <option value="British Virgin Islands">British Virgin Islands</option>
+        <option value="Brunei">Brunei</option>
+        <option value="Bulgaria">Bulgaria</option>
+        <option value="Burkina Faso">Burkina Faso</option>
+        <option value="Burundi">Burundi</option>
+        <option value="Cambodia">Cambodia</option>
+        <option value="Cameroon">Cameroon</option>
+        <option value="Canada">Canada</option>
+        <option value="Cape Verde">Cape Verde</option>
+        <option value="Caribbean Netherlands">Caribbean Netherlands</option>
+        <option value="Cayman Islands">Cayman Islands</option>
+        <option value="Central African Republic">Central African Republic</option>
+        <option value="Chad">Chad</option>
+        <option value="Chile">Chile</option>
+        <option value="China mainland">China mainland</option>
+        <option value="Christmas Island">Christmas Island</option>
+        <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
+        <option value="Colombia">Colombia</option>
+        <option value="Comoros">Comoros</option>
+        <option value="Cook Islands">Cook Islands</option>
+        <option value="Costa Rica">Costa Rica</option>
+        <option value="Côte d’Ivoire">Côte d’Ivoire</option>
+        <option value="Croatia">Croatia</option>
+        <option value="Curaçao">Curaçao</option>
+        <option value="Cyprus">Cyprus</option>
+        <option value="Czechia">Czechia</option>
+        <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
+        <option value="Denmark">Denmark</option>
+        <option value="Djibouti">Djibouti</option>
+        <option value="Dominica">Dominica</option>
+        <option value="Dominican Republic">Dominican Republic</option>
+        <option value="Ecuador">Ecuador</option>
+        <option value="Egypt">Egypt</option>
+        <option value="El Salvador">El Salvador</option>
+        <option value="Equatorial Guinea">Equatorial Guinea</option>
+        <option value="Eritrea">Eritrea</option>
+        <option value="Estonia">Estonia</option>
+        <option value="Eswatini">Eswatini</option>
+        <option value="Ethiopia">Ethiopia</option>
+        <option value="Falkland Islands">Falkland Islands</option>
+        <option value="Faroe Islands">Faroe Islands</option>
+        <option value="Fiji">Fiji</option>
+        <option value="Finland">Finland</option>
+        <option value="France">France</option>
+        <option value="French Guiana">French Guiana</option>
+        <option value="French Polynesia">French Polynesia</option>
+        <option value="French Southern Territories">French Southern Territories</option>
+        <option value="Gabon">Gabon</option>
+        <option value="Gambia">Gambia</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Germany">Germany</option>
+        <option value="Ghana">Ghana</option>
+        <option value="Gibraltar">Gibraltar</option>
+        <option value="Greece">Greece</option>
+        <option value="Greenland">Greenland</option>
+        <option value="Grenada">Grenada</option>
+        <option value="Guadeloupe">Guadeloupe</option>
+        <option value="Guam">Guam</option>
+        <option value="Guatemala">Guatemala</option>
+        <option value="Guernsey">Guernsey</option>
+        <option value="Guinea">Guinea</option>
+        <option value="Guinea-Bissau">Guinea-Bissau</option>
+        <option value="Guyana">Guyana</option>
+        <option value="Haiti">Haiti</option>
+        <option value="Heard &amp; Mc Donald Islands">Heard &amp; Mc Donald Islands</option>
+        <option value="Honduras">Honduras</option>
+        <option value="Hong Kong">Hong Kong</option>
+        <option value="Hungary">Hungary</option>
+        <option value="Iceland">Iceland</option>
+        <option value="India">India</option>
+        <option value="Indonesia">Indonesia</option>
+        <option value="Iraq">Iraq</option>
+        <option value="Ireland">Ireland</option>
+        <option value="Isle of Man">Isle of Man</option>
+        <option value="Israel">Israel</option>
+        <option value="Italy">Italy</option>
+        <option value="Jamaica">Jamaica</option>
+        <option value="Japan">Japan</option>
+        <option value="Jersey">Jersey</option>
+        <option value="Jordan">Jordan</option>
+        <option value="Kazakhstan">Kazakhstan</option>
+        <option value="Kenya">Kenya</option>
+        <option value="Kiribati">Kiribati</option>
+        <option value="Kosovo">Kosovo</option>
+        <option value="Kuwait">Kuwait</option>
+        <option value="Kyrgyzstan">Kyrgyzstan</option>
+        <option value="Laos">Laos</option>
+        <option value="Latvia">Latvia</option>
+        <option value="Lebanon">Lebanon</option>
+        <option value="Lesotho">Lesotho</option>
+        <option value="Liberia">Liberia</option>
+        <option value="Libya">Libya</option>
+        <option value="Liechtenstein">Liechtenstein</option>
+        <option value="Lithuania">Lithuania</option>
+        <option value="Luxembourg">Luxembourg</option>
+        <option value="Macao">Macao</option>
+        <option value="Madagascar">Madagascar</option>
+        <option value="Malawi">Malawi</option>
+        <option value="Malaysia">Malaysia</option>
+        <option value="Maldives">Maldives</option>
+        <option value=" Mali"> Mali</option>
+        <option value="Malta">Malta</option>
+        <option value="Marshall Islands">Marshall Islands</option>
+        <option value="Martinique">Martinique</option>
+        <option value="Mauritania">Mauritania</option>
+        <option value="Mauritius">Mauritius</option>
+        <option value="Mayotte">Mayotte</option>
+        <option value="Mexico">Mexico</option>
+        <option value="Micronesia">Micronesia</option>
+        <option value="Moldova">Moldova</option>
+        <option value="Monaco">Monaco</option>
+        <option value="Mongolia">Mongolia</option>
+        <option value="Montenegro">Montenegro</option>
+        <option value="Montserrat">Montserrat</option>
+        <option value="Morocco">Morocco</option>
+        <option value="Mozambique">Mozambique</option>
+        <option value="Myanmar">Myanmar</option>
+        <option value="Namibia">Namibia</option>
+        <option value="Nauru">Nauru</option>
+        <option value="Nepal">Nepal</option>
+        <option value="Netherlands">Netherlands</option>
+        <option value="New Caledonia">New Caledonia</option>
+        <option value="New Zealand">New Zealand</option>
+        <option value="Nicaragua">Nicaragua</option>
+        <option value="Niger">Niger</option>
+        <option value="Nigeria">Nigeria</option>
+        <option value="Niue">Niue</option>
+        <option value="Norfolk Island">Norfolk Island</option>
+        <option value="Northern Mariana Islands">Northern Mariana Islands</option>
+        <option value="North Macedonia">North Macedonia</option>
+        <option value="Norway">Norway</option>
+        <option value="Oman">Oman</option>
+        <option value="Pakistan">Pakistan</option>
+        <option value="Palau">Palau</option>
+        <option value="Palestinian Territories">Palestinian Territories</option>
+        <option value="Panama">Panama</option>
+        <option value="Papua New Guinea">Papua New Guinea</option>
+        <option value="Paraguay">Paraguay</option>
+        <option value="Peru">Peru</option>
+        <option value="Philippines">Philippines</option>
+        <option value="Pitcairn Island">Pitcairn Island</option>
+        <option value="Poland">Poland</option>
+        <option value="Portugal">Portugal</option>
+        <option value="Puerto Rico">Puerto Rico</option>
+        <option value="Qatar">Qatar</option>
+        <option value="Republic of the Congo">Republic of the Congo</option>
+        <option value="Réunion">Réunion</option>
+        <option value="Romania">Romania</option>
+        <option value="Russia">Russia</option>
+        <option value="Rwanda">Rwanda</option>
+        <option value="Saint Kitts &amp; Nevis">Saint Kitts &amp; Nevis</option>
+        <option value="Samoa">Samoa</option>
+        <option value="San Marino">San Marino</option>
+        <option value="Sao Tome &amp; Principe">Sao Tome &amp; Principe</option>
+        <option value="Saudi Arabia">Saudi Arabia</option>
+        <option value="Senegal">Senegal</option>
+        <option value="Serbia">Serbia</option>
+        <option value="Seychelles">Seychelles</option>
+        <option value="Sierra Leone">Sierra Leone</option>
+        <option value="Singapore">Singapore</option>
+        <option value="Sint Maarten">Sint Maarten</option>
+        <option value="Slovakia">Slovakia</option>
+        <option value="Slovenia">Slovenia</option>
+        <option value="Solomon Islands">Solomon Islands</option>
+        <option value="Somalia">Somalia</option>
+        <option value="South Africa">South Africa</option>
+        <option value="South Georgia &amp; South Sandwich Islands">South Georgia &amp; South Sandwich Islands</option>
+        <option value="South Korea">South Korea</option>
+        <option value="South Sudan">South Sudan</option>
+        <option value="Spain">Spain</option>
+        <option value="Sri Lanka">Sri Lanka</option>
+        <option value="St. Pierre &amp; Miquelon">St. Pierre &amp; Miquelon</option>
+        <option value="St Barthélemy">St Barthélemy</option>
+        <option value="St Helena">St Helena</option>
+        <option value="St Lucia">St Lucia</option>
+        <option value="St Martin">St Martin</option>
+        <option value="St Vincent &amp; the Grenadines">St Vincent &amp; the Grenadines</option>
+        <option value="Sudan">Sudan</option>
+        <option value="Suriname">Suriname</option>
+        <option value="Svalbard &amp; Jan Mayen Islands">Svalbard &amp; Jan Mayen Islands</option>
+        <option value="Sweden">Sweden</option>
+        <option value="Switzerland">Switzerland</option>
+        <option value="Taiwan">Taiwan</option>
+        <option value="Tajikistan">Tajikistan</option>
+        <option value="Tanzania">Tanzania</option>
+        <option value="Thailand">Thailand</option>
+        <option value="Timor-Leste">Timor-Leste</option>
+        <option value="Togo">Togo</option>
+        <option value="Tokelau">Tokelau</option>
+        <option value="Tonga">Tonga</option>
+        <option value="Trinidad &amp; Tobago">Trinidad &amp; Tobago</option>
+        <option value="Tunisia">Tunisia</option>
+        <option value="Turkey">Turkey</option>
+        <option value="Turkmenistan">Turkmenistan</option>
+        <option value="Turks &amp; Caicos Islands">Turks &amp; Caicos Islands</option>
+        <option value="Tuvalu">Tuvalu</option>
+        <option value="Uganda">Uganda</option>
+        <option value="Ukraine">Ukraine</option>
+        <option value="United Arab Emirates">United Arab Emirates</option>
+        <option value="United Kingdom">United Kingdom</option>
+        <option value="United States">United States</option>
+        <option value="United States Minor Outlying Islands">United States Minor Outlying Islands</option>
+        <option value="Uruguay">Uruguay</option>
+        <option value="Uzbekistan">Uzbekistan</option>
+        <option value="Vanuatu">Vanuatu</option>
+        <option value="Vatican City">Vatican City</option>
+        <option value="Venezuela">Venezuela</option>
+        <option value="Vietnam">Vietnam</option>
+        <option value="Virgin Islands (U.S.)">Virgin Islands (U.S.)</option>
+        <option value="Wallis &amp; Futuna Islands">Wallis &amp; Futuna Islands</option>
+        <option value="Western Sahara">Western Sahara</option>
+        <option value="Yemen">Yemen</option>
+        <option value="Zambia">Zambia</option>
+        <option value="Zimbabwe">Zimbabwe</option>
+    </select>
+    </br>
+    <p class="country-signup er-msg-signup"></p></br>
+    {% load static %}
+    
+    <input type="input" id="uname-signup" name="username" placeholder="Username" autocomplete="off"><img class="uname-loading" src="{% static 'shop/loading.gif' %}">
+    <p class="uname-signup er-msg-signup"></p></br>
+
+    <input type="password" id="passwd-signup" name="password" placeholder="Password">
+    <p class="passwd-signup er-msg-signup"></p></br>
+
+    <input type="password" id="cpasswd-signup" placeholder="Confirm Password">
+    <p class="cpasswd-signup er-msg-signup"></p></br>
+
+    <input type="text" id="dateofbirth-signup" name="date_of_birth" required="true" placeholder="Date of Birth" 
+      onfocus="(this.type = 'date')">
+    <p class="dob-signup er-msg-signup"></p></br>
+
+    <div class="international-number-signup">
+        <select name="country-code" id="country-code-signup">
+            <option disabled="true" selected="true" value="">code</option>
+            <option value="+93">+93 (Afghanistan)</option>
+            <option value="+358">+358 (Åland Islands)</option>
+            <option value="+355">+355 (Albania)</option>
+            <option value="+213">+213 (Algeria)</option>
+            <option value="+1">+1 (American Samoa)</option>
+            <option value="+376">+376 (Andorra)</option>
+            <option value="+244">+244 (Angola)</option>
+            <option value="+1">+1 (Anguilla)</option>
+            <option value="+672">+672 (Antarctica)</option>
+            <option value="+1">+1 (Antigua &amp; Barbuda)</option>
+            <option value="+54">+54 (Argentina)</option>
+            <option value="+374">+374 (Armenia)</option>
+            <option value="+297">+297 (Aruba)</option>
+            <option value="+61">+61 (Australia)</option>
+            <option value="+43">+43 (Austria)</option>
+            <option value="+994">+994 (Azerbaijan)</option>
+            <option value="+1">+1 (Bahamas)</option>
+            <option value="+973">+973 (Bahrain)</option>
+            <option value="+880">+880 (Bangladesh)</option>
+            <option value="+1">+1 (Barbados)</option>
+            <option value="+375">+375 (Belarus)</option>
+            <option value="+32">+32 (Belgium)</option>
+            <option value="+501">+501 (Belize)</option>
+            <option value="+229">+229 (Benin)</option>
+            <option value="+1">+1 (Bermuda)</option>
+            <option value="+975">+975 (Bhutan)</option>
+            <option value="+591">+591 (Bolivia)</option>
+            <option value="+387">+387 (Bosnia &amp; Herzegovina)</option>
+            <option value="+267">+267 (Botswana)</option>
+            <option value="+47">+47 (Bouvet Island)</option>
+            <option value="+55">+55 (Brazil)</option>
+            <option value="+246">+246 (British Indian Ocean Territory)</option>
+            <option value="+1">+1 (British Virgin Islands)</option>
+            <option value="+673">+673 (Brunei)</option>
+            <option value="+359">+359 (Bulgaria)</option>
+            <option value="+226">+226 (Burkina Faso)</option>
+            <option value="+257">+257 (Burundi)</option>
+            <option value="+855">+855 (Cambodia)</option>
+            <option value="+237">+237 (Cameroon)</option>
+            <option value="+1">+1 (Canada)</option>
+            <option value="+238">+238 (Cape Verde)</option>
+            <option value="+599">+599 (Caribbean Netherlands)</option>
+            <option value="+1">+1 (Cayman Islands)</option>
+            <option value="+236">+236 (Central African Republic)</option>
+            <option value="+235">+235 (Chad)</option>
+            <option value="+56">+56 (Chile)</option>
+            <option value="+86">+86 (China mainland)</option>
+            <option value="+61">+61 (Christmas Island)</option>
+            <option value="+61">+61 (Cocos (Keeling) Islands)</option>
+            <option value="+57">+57 (Colombia)</option>
+            <option value="+269">+269 (Comoros)</option>
+            <option value="+682">+682 (Cook Islands)</option>
+            <option value="+506">+506 (Costa Rica)</option>
+            <option value="+225">+225 (Côte d’Ivoire)</option>
+            <option value="+385">+385 (Croatia)</option>
+            <option value="+599">+599 (Curaçao)</option>
+            <option value="+357">+357 (Cyprus)</option>
+            <option value="+420">+420 (Czechia)</option>
+            <option value="+243">+243 (Democratic Republic of the Congo)</option>
+            <option value="+45">+45 (Denmark)</option>
+            <option value="+253">+253 (Djibouti)</option>
+            <option value="+1">+1 (Dominica)</option>
+            <option value="+1">+1 (Dominican Republic)</option>
+            <option value="+593">+593 (Ecuador)</option>
+            <option value="+20">+20 (Egypt)</option>
+            <option value="+503">+503 (El Salvador)</option>
+            <option value="+240">+240 (Equatorial Guinea)</option>
+            <option value="+291">+291 (Eritrea)</option>
+            <option value="+372">+372 (Estonia)</option>
+            <option value="+268">+268 (Eswatini)</option>
+            <option value="+251">+251 (Ethiopia)</option>
+            <option value="+500">+500 (Falkland Islands)</option>
+            <option value="+298">+298 (Faroe Islands)</option>
+            <option value="+679">+679 (Fiji)</option>
+            <option value="+358">+358 (Finland)</option>
+            <option value="+33">+33 (France)</option>
+            <option value="+594">+594 (French Guiana)</option>
+            <option value="+689">+689 (French Polynesia)</option>
+            <option value="+262">+262 (French Southern Territories)</option>
+            <option value="+241">+241 (Gabon)</option>
+            <option value="+220">+220 (Gambia)</option>
+            <option value="+995">+995 (Georgia)</option>
+            <option value="+49">+49 (Germany)</option>
+            <option value="+233">+233 (Ghana)</option>
+            <option value="+350">+350 (Gibraltar)</option>
+            <option value="+30">+30 (Greece)</option>
+            <option value="+299">+299 (Greenland)</option>
+            <option value="+1">+1 (Grenada)</option>
+            <option value="+590">+590 (Guadeloupe)</option>
+            <option value="+1">+1 (Guam)</option>
+            <option value="+502">+502 (Guatemala)</option>
+            <option value="+44">+44 (Guernsey)</option>
+            <option value="+224">+224 (Guinea)</option>
+            <option value="+245">+245 (Guinea-Bissau)</option>
+            <option value="+592">+592 (Guyana)</option>
+            <option value="+509">+509 (Haiti)</option>
+            <option value="+61">+61 (Heard &amp; Mc Donald Islands)</option>
+            <option value="+504">+504 (Honduras)</option>
+            <option value="+852">+852 (Hong Kong)</option>
+            <option value="+36">+36 (Hungary)</option>
+            <option value="+354">+354 (Iceland)</option>
+            <option value="+91">+91 (India)</option>
+            <option value="+62">+62 (Indonesia)</option>
+            <option value="+964">+964 (Iraq)</option>
+            <option value="+353">+353 (Ireland)</option>
+            <option value="+44">+44 (Isle of Man)</option>
+            <option value="+972">+972 (Israel)</option>
+            <option value="+39">+39 (Italy)</option>
+            <option value="+1">+1 (Jamaica)</option>
+            <option value="+81">+81 (Japan)</option>
+            <option value="+44">+44 (Jersey)</option>
+            <option value="+962">+962 (Jordan)</option>
+            <option value="+7">+7 (Kazakhstan)</option>
+            <option value="+254">+254 (Kenya)</option>
+            <option value="+686">+686 (Kiribati)</option>
+            <option value="+383">+383 (Kosovo)</option>
+            <option value="+965">+965 (Kuwait)</option>
+            <option value="+996">+996 (Kyrgyzstan)</option>
+            <option value="+856">+856 (Laos)</option>
+            <option value="+371">+371 (Latvia)</option>
+            <option value="+961">+961 (Lebanon)</option>
+            <option value="+266">+266 (Lesotho)</option>
+            <option value="+231">+231 (Liberia)</option>
+            <option value="+218">+218 (Libya)</option>
+            <option value="+423">+423 (Liechtenstein)</option>
+            <option value="+370">+370 (Lithuania)</option>
+            <option value="+352">+352 (Luxembourg)</option>
+            <option value="+853">+853 (Macao)</option>
+            <option value="+261">+261 (Madagascar)</option>
+            <option value="+265">+265 (Malawi)</option>
+            <option value="+60">+60 (Malaysia)</option>
+            <option value="+960">+960 (Maldives)</option>
+            <option value="+223">+223 (Mali)</option>
+            <option value="+356">+356 (Malta)</option>
+            <option value="+692">+692 (Marshall Islands)</option>
+            <option value="+596">+596 (Martinique)</option>
+            <option value="+222">+222 (Mauritania)</option>
+            <option value="+230">+230 (Mauritius)</option>
+            <option value="+262">+262 (Mayotte)</option>
+            <option value="+52">+52 (Mexico)</option>
+            <option value="+691">+691 (Micronesia)</option>
+            <option value="+373">+373 (Moldova)</option>
+            <option value="+377">+377 (Monaco)</option>
+            <option value="+976">+976 (Mongolia)</option>
+            <option value="+382">+382 (Montenegro)</option>
+            <option value="+1">+1 (Montserrat)</option>
+            <option value="+212">+212 (Morocco)</option>
+            <option value="+258">+258 (Mozambique)</option>
+            <option value="+95">+95 (Myanmar)</option>
+            <option value="+264">+264 (Namibia)</option>
+            <option value="+674">+674 (Nauru)</option>
+            <option value="+977">+977 (Nepal)</option>
+            <option value="+31">+31 (Netherlands)</option>
+            <option value="+687">+687 (New Caledonia)</option>
+            <option value="+64">+64 (New Zealand)</option>
+            <option value="+505">+505 (Nicaragua)</option>
+            <option value="+227">+227 (Niger)</option>
+            <option value="+234">+234 (Nigeria)</option>
+            <option value="+683">+683 (Niue)</option>
+            <option value="+1">+1 (Northern Mariana Islands)</option>
+            <option value="+389">+389 (North Macedonia)</option>
+            <option value="+47">+47 (Norway)</option>
+            <option value="+968">+968 (Oman)</option>
+            <option value="+92">+92 (Pakistan)</option>
+            <option value="+680">+680 (Palau)</option>
+            <option value="+970">+970 (Palestinian Territories)</option>
+            <option value="+507">+507 (Panama)</option>
+            <option value="+675">+675 (Papua New Guinea)</option>
+            <option value="+595">+595 (Paraguay)</option>
+            <option value="+51">+51 (Peru)</option>
+            <option value="+63">+63 (Philippines)</option>
+            <option value="+870">+870 (Pitcairn Island)</option>
+            <option value="+48">+48 (Poland)</option>
+            <option value="+351">+351 (Portugal)</option>
+            <option value="+1">+1 (Puerto Rico)</option>
+            <option value="+974">+974 (Qatar)</option>
+            <option value="+242">+242 (Republic of the Congo)</option>
+            <option value="+262">+262 (Réunion)</option>
+            <option value="+40">+40 (Romania)</option>
+            <option value="+7">+7 (Russia)</option>
+            <option value="+250">+250 (Rwanda)</option>
+            <option value="+1">+1 (Saint Kitts &amp; Nevis)</option>
+            <option value="+685">+685 (Samoa)</option>
+            <option value="+378">+378 (San Marino)</option>
+            <option value="+239">+239 (Sao Tome &amp; Principe)</option>
+            <option value="+966">+966 (Saudi Arabia)</option>
+            <option value="+221">+221 (Senegal)</option>
+            <option value="+381">+381 (Serbia)</option>
+            <option value="+248">+248 (Seychelles)</option>
+            <option value="+232">+232 (Sierra Leone)</option>
+            <option value="+65">+65 (Singapore)</option>
+            <option value="+1">+1 (Sint Maarten)</option>
+            <option value="+421">+421 (Slovakia)</option>
+            <option value="+386">+386 (Slovenia)</option>
+            <option value="+677">+677 (Solomon Islands)</option>
+            <option value="+252">+252 (Somalia)</option>
+            <option value="+27">+27 (South Africa)</option>
+            <option value="+82">+82 (South Korea)</option>
+            <option value="+211">+211 (South Sudan)</option>
+            <option value="+34">+34 (Spain)</option>
+            <option value="+94">+94 (Sri Lanka)</option>
+            <option value="+508">+508 (St. Pierre &amp; Miquelon)</option>
+            <option value="+590">+590 (St Barthélemy)</option>
+            <option value="+290">+290 (St Helena)</option>
+            <option value="+1">+1 (St Lucia)</option>
+            <option value="+1">+1 (St Martin)</option>
+            <option value="+1">+1 (St Vincent &amp; the Grenadines)</option>
+            <option value="+249">+249 (Sudan)</option>
+            <option value="+597">+597 (Suriname)</option>
+            <option value="+47">+47 (Svalbard &amp; Jan Mayen Islands)</option>
+            <option value="+46">+46 (Sweden)</option>
+            <option value="+41">+41 (Switzerland)</option>
+            <option value="+886">+886 (Taiwan)</option>
+            <option value="+992">+992 (Tajikistan)</option>
+            <option value="+255">+255 (Tanzania)</option>
+            <option value="+66">+66 (Thailand)</option>
+            <option value="+670">+670 (Timor-Leste)</option>
+            <option value="+228">+228 (Togo)</option>
+            <option value="+690">+690 (Tokelau)</option>
+            <option value="+676">+676 (Tonga)</option>
+            <option value="+1">+1 (Trinidad &amp; Tobago)</option>
+            <option value="+216">+216 (Tunisia)</option>
+            <option value="+90">+90 (Turkey)</option>
+            <option value="+993">+993 (Turkmenistan)</option>
+            <option value="+1">+1 (Turks &amp; Caicos Islands)</option>
+            <option value="+688">+688 (Tuvalu)</option>
+            <option value="+256">+256 (Uganda)</option>
+            <option value="+380">+380 (Ukraine)</option>
+            <option value="+971">+971 (United Arab Emirates)</option>
+            <option value="+44">+44 (United Kingdom)</option>
+            <option value="+1">+1 (United States)</option>
+            <option value="+598">+598 (Uruguay)</option>
+            <option value="+998">+998 (Uzbekistan)</option>
+            <option value="+678">+678 (Vanuatu)</option>
+            <option value="+39">+39 (Vatican City)</option>
+            <option value="+58">+58 (Venezuela)</option>
+            <option value="+84">+84 (Vietnam)</option>
+            <option value="+1">+1 (Virgin Islands (U.S.))</option>
+            <option value="+681">+681 (Wallis &amp; Futuna Islands)</option>
+            <option value="+212">+212 (Western Sahara)</option>
+            <option value="+967">+967 (Yemen)</option>
+            <option value="+260">+260 (Zambia)</option>
+            <option value="+263">+263 (Zimbabwe)</option>
+        </select>
+        <input type="number" id="mobile-signup" name="mobile" placeholder="Mobile No">
+    </div><img class="mobile-loading" src="{% static 'shop/loading.gif' %}">
+    <p class="mobile-signup er-msg-signup"></p></br>
+
+    <input type="email" id="email-signup" name="email" placeholder="Email" required="true"><img class="email-loading" src="{% static 'shop/loading.gif' %}">
+    <p class="email-signup er-msg-signup"></p></br>
+
+    <button type="submit" class="btn-submit">Submit</button>
+</form>
+{% endblock %}
+
+{% block jquery %}
+<script type="text/javascript">
+    
+    maxdate = new Date();
+    maxdate.setFullYear(maxdate.getFullYear()-18)
+    $('#dateofbirth-signup').attr('max',maxdate.toISOString().split('T')[0]);
+    uname_validate = 1;
+    email_valid = 1;
+    mobile_valid = 1;
+    a = 1;
+    $('#uname-signup').keyup(function(){
+        
+        $('.er-msg-signup').css("visibility", "hidden");
+        $('.er-msg-signup.uname-signup').removeClass('green');
+
+        if(!($('#uname-signup').val()).match(/[a-zA-z0-9]{3,}/)){
+
+            $('.uname-signup').css("visibility", "visible");
+            $('.uname-signup').text("enter valid username");
+            uname_validate = 0
+        }
+        else if(($('#uname-signup').val()).match(/\W{1,}/)){
+            $('.uname-signup').css("visibility", "visible");
+            $('.uname-signup').text("special charcter not allow");
+            uname_validate = 0
+        }
+        else if($('#uname-signup').val() != null)
+        {
+            $.ajax({
+                type:'GET',
+                url:'/shop/uname/',
+                beforeSend: function(){
+                    $('.uname-loading').css("visibility","visible");
+                },
+                data:{
+                    e_username: $('#uname-signup').val()
+                },
+                success: function(data){
+                    if(data == "taken"){
+                        $('.uname-signup').css("visibility", "visible");
+                        $('.uname-signup').text("username is taken");
+                        uname_validate = 0
+                    }
+                    else if(data== "available"){
+                        $('.uname-signup').css("visibility", "visible");
+                        $('.uname-signup').text("username is available");
+                        $('.uname-signup.er-msg-signup').addClass('green');
+                        uname_validate = 1
+                    }
+                },
+                complete: function(){
+                    $('.uname-loading').css("visibility","hidden");
+
+                },
+            });
+        }
+        
+    });
+
+    $('#email-signup').blur(function () {
+        if ($('#email-signup').val()!= '')
+        {
+            $.ajax({
+                type:'POST',
+                url:'/ajax_email_signup/',
+                beforeSend: function(){
+                    $('.email-loading').css("visibility","visible");
+                },
+                data:{
+                    email_signup: $('#email-signup').val()
+                },
+                success: function(data){
+                    if(data == "invalid"){
+                        email_valid = 0;
+                        $('.email-signup').css("visibility", "visible");
+                        $('.email-signup').text("email is used enter different email id");
+                    }
+                    else{
+                        $('.email-signup').css("visibility", "hidden");
+                        email_valid = 1;
+                    }
+            
+                },
+                complete: function(){
+                    $('.email-loading').css("visibility","hidden");
+
+                },
+            });
+        }
+    });
+
+    $('.international-number-signup *').blur(function(){
+        if(($('#mobile-signup').val() != "") & (($('#mobile-signup').val()).length == 10))
+        {
+            if(($('#mobile-signup').val()).match(/\d{10}/))
+            { 
+                if ($('#country-code-signup').val() != null){
+                    $.ajax({
+                        type:'POST',
+                        url:'/ajax_mobile_signup/',
+                        beforeSend: function(){
+                            $('.mobile-loading').css("visibility","visible");
+                        },
+                        data:{
+                            mobile_signup: ($('#country-code-signup').val()+$('#mobile-signup').val())
+                        },
+                        success: function(data){
+                            if(data == "invalid"){
+                                mobile_valid = 0;
+                                $('.mobile-signup').css("visibility", "visible");
+                                $('.mobile-signup').text("mobile no is used enter different mobile no");
+                            }
+                            else{
+                                $('.mobile-signup').css("visibility", "hidden");
+                                mobile_valid = 1;
+                            }
+                    
+                        },
+                        complete: function(){
+                            $('.mobile-loading').css("visibility","hidden");
+                        },
+                    });
+                }
+                
+            }
+        }
+    });
+
+
+    $('.btn-submit').click(function () {
+        $('.er-msg-signup').css("visibility", "hidden");
+        $('.er-msg-signup.uname-signup').removeClass('green');
+        
+
+        if ($('#fname-signup').val() == "") {
+            $('.fname-signup').css("visibility", "visible");
+            $('.fname-signup').text("please enter first name");
+            return false
+        }
+        else if(!($('#fname-signup').val()).match(/^[a-zA-Z '.-]*$/))
+        {
+            $('.fname-signup').css("visibility", "visible");
+            $('.fname-signup').text("enter valid first name");
+            return false
+        }
+        else if ($('#lname-signup').val() == "") {
+            $('.lname-signup').css("visibility", "visible");
+            $('.lname-signup').text("please enter last name");
+            return false
+        }
+        else if(!($('#lname-signup').val()).match(/^[a-zA-Z '.-]*$/)){
+            $('.lname-signup').css("visibility", "visible");
+            $('.lname-signup').text("enter valid last name");
+            return false
+        }
+        else if ($('#country-signup').val() == null) {
+            $('.country-signup').css("visibility", "visible");
+            $('.country-signup').text("please select the country");
+            return false
+        }
+        else if ($('#uname-signup').val() == ""){
+            $('.uname-signup').css("visibility", "visible");
+            $('.uname-signup').text("please enter username");
+            return false
+        }
+        else if(uname_validate == 0){
+            $('.uname-signup').css("visibility", "visible");
+            return false
+        }
+        else if ($('#passwd-signup').val() == "") {
+            $('.passwd-signup').css("visibility", "visible");
+            $('.passwd-signup').text("please enter the password");
+            return false
+        }
+        else if ((($('#passwd-signup').val()).length < 8) || (($('#passwd-signup').val()).length >= 16)) {
+            $('.passwd-signup').css("visibility", "visible");
+            $('.passwd-signup').text("password has min 8 and max 16 charcter");
+            return false
+        }
+        else if (!($('#passwd-signup').val()).match(/[A-Z]+/)) {
+            $('.passwd-signup').css("visibility", "visible");
+            $('.passwd-signup').text("please add at least one capital letter");
+            return false
+        }
+        else if (!($('#passwd-signup').val()).match(/[a-z]+/)) {
+            $('.passwd-signup').css("visibility", "visible");
+            $('.passwd-signup').text("please add at least one small letter");
+            return false
+        }
+        else if (!($('#passwd-signup').val()).match(/\d+/)) {
+            $('.passwd-signup').css("visibility", "visible");
+            $('.passwd-signup').text("please add at least one digit in the password");
+            return false
+        }
+        else if (!($('#passwd-signup').val()).match(/\W+/)) {
+            $('.passwd-signup').css("visibility", "visible");
+            $('.passwd-signup').text("add at least one special charcter");
+            return false
+        }
+        else if ($('#cpasswd-signup').val() != $('#passwd-signup').val()) {
+            $('.cpasswd-signup').css("visibility", "visible");
+            $('.cpasswd-signup').text("password and confirm password are not match");
+            return false;
+        }
+        else if ($('#dateofbirth-signup').val() == "") {
+            $('.dob-signup').css("visibility", "visible");
+            $('.dob-signup').text("please enter date of birth");
+            return false
+        }
+        else if ($('#country-code-signup').val() == null) {
+            $('.mobile-signup').css("visibility", "visible");
+            $('.mobile-signup').text("please select country code");
+            $('#mobile').val("");
+            return false
+        }
+        else if ($('#mobile-signup').val() == "") {
+            $('.mobile-signup').css("visibility", "visible");
+            $('.mobile-signup').text("please enter your mobile number");
+            return false
+        }
+        else if (!($('#mobile-signup').val()).match(/\d{10}/))  {
+            $('.mobile-signup').css("visibility", "visible");
+            $('.mobile-signup').text("enter valid mobile no (10 digits)");
+            return false; 
+        }
+        else if(($('#mobile-signup').val()).length != 10){
+            $('.mobile-signup').css("visibility", "visible");
+            $('.mobile-signup').text("enter valid mobile no (10 digits)");
+            return false;
+        }
+        else if ($('#email-signup').val() == "") {
+            $('.email-signup').css("visibility", "visible");
+            $('.email-signup').text("please enter your email id");
+            return false
+        }
+        else if($('.email-loading').css('visibility') == "visible"){
+            $('.email-signup').css("visibility", "visible");
+            $('.email-signup').text("wait till loading complete");
+            return false;
+        }
+        else if($('.mobile-loading').css('visibility') == "visible"){
+            $('.mobile-signup').css("visibility", "visible");
+            $('.mobile-signup').text("wait till loading complete");
+            return false;
+        }
+        else if(email_valid == 0){
+            $('.email-signup').css("visibility", "visible");
+            $('.email-signup').text("email is used enter different email id");
+            return false;
+        }
+        else if(mobile_valid == 0){
+            $('.mobile-signup').css("visibility", "visible");
+            $('.mobile-signup').text("mobile no is used enter different mobile no");
+            return false;
+        }
+    });
+
+</script>
+{% endblock %}
