@@ -89,6 +89,8 @@ def login_validate(request):
             return HttpResponse("valid")
         else:
             return HttpResponse("invalid")
+    else:
+        return HttpResponse("404-Page Not Found")
 
 def logout_validate(request):
     try:
