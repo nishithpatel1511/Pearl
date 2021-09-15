@@ -90,17 +90,12 @@ def login_validate(request):
         else:
             return HttpResponse("invalid")
 
-
-    #     try:
-    #         user_info = Pearl_Users.objects.filter(username=i['username_login'])[0]
-    #         password = check_password(i['password_login'], user_info.password)
-    #         if password:
-    #             return HttpResponse('valid')
-    #         else:
-    #             return HttpResponse('invalid')
-    #     except:
-    #         return HttpResponse('invalid')
-    # return HttpResponse("invalid")
+def logout_validate(request):
+    try:
+        logout(request)
+        return HttpResponse("logout")
+    except:
+        return HttpResponse("error")
        
 @csrf_exempt
 def ajax_email_signup(request):

@@ -301,6 +301,7 @@
       border-radius: 5px;
       background-color: lightgray;
       padding-bottom: 25px;
+      text-align: center;
     }
 
     /*new work from here*/
@@ -390,6 +391,13 @@
       background-color: black;
       border-radius: 50%;
       margin-left: auto;
+    }
+    .logout-btn{
+      height: 25px;
+      border-radius: 12.5px;
+      padding: 0 10px;
+      padding-bottom: 2.5px;
+      line-height: 1;
     }
     @media (max-width: 400px) {
       .login-input-box {
@@ -520,9 +528,16 @@
           <div class="my-popover">
             <img src="{% static 'shop/svgs/uparr.svg' %}">
             <div class="my-popover-box">
+              
+              {% if user.is_authenticated %}
+              <h5 class="user-fname" style="text-decoration: none;text-align: center;color: black; margin-top: 10px;">
+                Welcome {{request.user}}</h5>
+              <button class="btn-primary logout-btn" onclick="logout_user()">Log Out</button>
+              {% else %}
               <h5 class="user-fname" style="text-decoration: none;text-align: center;color: black; margin-top: 10px;">
                 Not Logged In</h5>
               <div style="text-align: center;"><a class="login-btn ">Log in</a></div>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -670,6 +685,21 @@
           }
           else {
             $('.er-msg-login').css('visibility', 'visible');
+          }
+        }
+      });
+    };
+    var logout_user = function(){
+      $.ajax({
+        type: 'GET',
+        url: '/logout/',
+        success: function (data) {
+          if (data == 'logout') {
+            alert('logout suceessfully');
+            location.reload();
+          }
+          else if (data == 'error') {
+            alert('some error occur')
           }
         }
       });
