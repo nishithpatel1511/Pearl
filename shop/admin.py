@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
 from .models import *
 import nested_admin
@@ -27,5 +26,4 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
 	inlines = [colorInline, memoryRomInline, memoryRamInline]
 
 admin.site.register(Product, ProductAdmin)
-admin.site.register(customer)
 admin.site.register(Pearl_Users)

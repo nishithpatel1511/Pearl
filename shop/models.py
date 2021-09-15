@@ -1,5 +1,3 @@
-import datetime
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import sqlite3
@@ -17,20 +15,17 @@ class Product(models.Model):
     base_mrp = models.IntegerField(default=0)
     display_ram = models.BooleanField(default=0)
     base_ram = models.IntegerField(default=0)
+
     def __str__(self):
         return self.product_name
-
 
 class ProductColor(models.Model):
     product = models.ForeignKey(Product, on_delete= models.CASCADE, related_name= 'ProductColor')
     color = models.ImageField(default="")
 
-
 class ProductColorImages(models.Model):
     colour = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="image_color")
     image = models.ImageField(default="")
-
-
 
 class ProductMemoryRom(models.Model):
     product = models.ForeignKey(Product, on_delete= models.CASCADE, related_name= 'ProductMemoryRom')
@@ -44,20 +39,8 @@ class ProductMemoryRam(models.Model):
     price_diff = models.IntegerField(default=0)
     mrp_diff = models.IntegerField(default=0)
 
-class customer(models.Model):
-    firstname = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=50)
-    username = models.CharField(max_length=50)
-    password = models.CharField(max_length=16)
-    dateofbirth = models.DateField()
-    country = models.CharField(max_length=30)
-    mobile = models.CharField(max_length =14)
-    email = models.EmailField()
-    def __str__(self):
-        return self.username
-
 class Pearl_Users(AbstractUser):
-    first_name = models.CharField(max_length=50, verbose_name="firstname")
+    first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
     date_of_birth = models.DateField(default=now)
@@ -65,19 +48,19 @@ class Pearl_Users(AbstractUser):
     mobile = models.CharField(max_length=14, unique=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=16)
-    is_superuser  = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    is_customer = models.BooleanField(default = True)
-    is_authenticated =True
+    is_customer = models.BooleanField(default=True)
+    is_authenticated = True
     is_anonymous = True
     groups = None
     user_permissions = None
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'country', 'mobile', 'email', 'dateofbirth']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'country', 'mobile', 'email', 'date_of_birth']
 
     def __str__(self):
         return self.username
+
     def get_username(self):
         return self.username
-    # def set_password(self, raw_password):

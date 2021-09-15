@@ -1,8 +1,9 @@
+from django.contrib.auth.hashers import make_password,check_password
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie,csrf_exempt
 
-from .models import Product, customer, Pearl_Users
+from .models import Product, Pearl_Users
 from math import ceil
 
 import sqlite3
@@ -60,32 +61,34 @@ def checkout(request):
     return HttpResponse("check out")
 
 def signup(request):
-    
     if request.method == "POST":
         i =request.POST
         add = Pearl_Users(first_name=i['firstname'], last_name=i['lastname'], username=i['username'],
-            password=i['password'], dateofbirth=i['date_of_birth'], country=i['country'],
+            password=make_password(i['password']), date_of_birth=i['date_of_birth'], country=i['country'],
             mobile= (i['country-code']+i['mobile']), email= i['email'])
         add.save()
     return render(request, 'shop/signup.html')
 
 def username_validation(request):
-    uname = request.GET['e_username']
-    for i in Pearl_Users.objects.values('username'):
-        if uname == i['username']:
-            return HttpResponse("taken")
-    return HttpResponse("available")
+    try:
+        uname = Pearl_Users.objects.filter(username=request.GET['e_username'])[0]
+        return HttpResponse("taken")
+    except:
+        return HttpResponse("available")
 
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
         i = request.POST
         try:
-            user_info = Pearl_Users.objects.filter(username = i['username_login'], password = i['password_login'])[0]
-            return HttpResponse('valid')
+            user_info = Pearl_Users.objects.filter(username=i['username_login'])[0]
+            password = check_password(i['password_login'], user_info.password)
+            if password:
+                return HttpResponse('valid')
+            else:
+                return HttpResponse('invalid')
         except:
             return HttpResponse('invalid')
-            
     return HttpResponse("invalid")
        
 @csrf_exempt
@@ -93,7 +96,7 @@ def ajax_email_signup(request):
     if request.method == 'POST':
         i = request.POST
         try:
-            user_email = Pearl_Users.objects.filter(email = i['email_signup'])[0]
+            user_email = Pearl_Users.objects.filter(email=i['email_signup'])[0]
             return HttpResponse("invalid")
         except:    
             return HttpResponse("valid")
@@ -107,7 +110,6 @@ def ajax_mobile_signup(request):
             return HttpResponse("invalid")
         except:
             return HttpResponse("valid")
-
 
 def temp(request):
     return render(request, 'shop/temp.html')
