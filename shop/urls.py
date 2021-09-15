@@ -13,7 +13,7 @@ urlpatterns = [
     path('signup/', views.signup, name="signup"),
     path('temp/', views.temp, name="temp"),
     path('uname/', views.username_validation, name= "unamevalidation"),
-    path('login/', views.login, name="login"),
+    path('login/', views.login_validate, name="login"),
     path('ajax_email_signup/', views.ajax_email_signup, name="ajax_email_signup"),
     path('ajax_mobile_signup/', views.ajax_mobile_signup, name="ajax_mobile_signup")
 ]

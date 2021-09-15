@@ -663,7 +663,7 @@
         success: function (data) {
           if (data == 'valid') {
             $('.er-msg-login').css('visibility', 'hidden');
-            alert("login success")
+            location.reload();
           }
           else if (data == 'invalid') {
             $('.er-msg-login').css('visibility', 'visible');

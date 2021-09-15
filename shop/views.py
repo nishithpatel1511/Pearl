@@ -1,7 +1,9 @@
 from django.contrib.auth.hashers import make_password,check_password
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.views.decorators.csrf import ensure_csrf_cookie,csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.messages import success, error
 
 from .models import Product, Pearl_Users
 from math import ceil
@@ -77,19 +79,28 @@ def username_validation(request):
         return HttpResponse("available")
 
 @csrf_exempt
-def login(request):
+def login_validate(request):
+
     if request.method == 'POST':
         i = request.POST
-        try:
-            user_info = Pearl_Users.objects.filter(username=i['username_login'])[0]
-            password = check_password(i['password_login'], user_info.password)
-            if password:
-                return HttpResponse('valid')
-            else:
-                return HttpResponse('invalid')
-        except:
-            return HttpResponse('invalid')
-    return HttpResponse("invalid")
+        user = authenticate(username=i['username_login'], password=i['password_login'])
+        if user is not None:
+            login(request, user)
+            return HttpResponse("valid")
+        else:
+            return HttpResponse("invalid")
+
+
+    #     try:
+    #         user_info = Pearl_Users.objects.filter(username=i['username_login'])[0]
+    #         password = check_password(i['password_login'], user_info.password)
+    #         if password:
+    #             return HttpResponse('valid')
+    #         else:
+    #             return HttpResponse('invalid')
+    #     except:
+    #         return HttpResponse('invalid')
+    # return HttpResponse("invalid")
        
 @csrf_exempt
 def ajax_email_signup(request):
