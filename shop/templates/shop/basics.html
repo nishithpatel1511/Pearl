@@ -227,7 +227,6 @@
     .cart-btn {
       height: 24px;
       margin-left: 20px;
-      margin-right: 15px;
       padding-right: 4.5px;
       text-decoration: none;
       color: black;
@@ -254,6 +253,7 @@
       height: 24px;
       width: 24px;
       cursor: pointer;
+      margin-left: 15px;
     }
 
     .user-btn img {
@@ -487,7 +487,8 @@
           </div>
 
         </div>
-        <!-- <a tabindex="0" id="example" class="btn btn-lg btn-danger popover-dismiss" >Dismissible popover</a> -->
+
+        {% if user.is_authenticated %}
         <a class="cart-btn" href="#">
           <img class="cart-logo" src="{% static 'shop/svgs/bag.svg' %}">
           <span id="cart1" class="cart-no">0</span>
@@ -498,6 +499,7 @@
             </div>
           </div>
         </a>
+        {% endif %}
 
         <div class="user-btn">
           <img src="{% static '/shop/svgs/user.svg' %}">
@@ -634,8 +636,6 @@
         alert('now search');
       }
     });
-
-    var popover = new bootstrap.Popover(document.querySelector('.cart-btn'));
 
     $('.user-btn').click(function () {
       $(this).find('.my-popover').toggleClass('active');
