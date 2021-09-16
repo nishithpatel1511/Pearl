@@ -71,11 +71,18 @@
     .my-sliderbuttons.active{
       opacity: 1;
     }
-    .my-slider-item .card-img,
     .my-slider-item .card-img-top
     {
-      max-width: 160px;
-      max-height: 160px;
+      width: 160px;
+      height: 160px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+    }
+    .card-img-top img{
+      margin: auto;
+      max-width: 100%;
+      max-height: 100%;
     }
     .my-slider-item .card a{
       text-decoration: none;
@@ -103,6 +110,12 @@
         width:calc(var(--my-slider-inner-width)*0.2) !important;
         margin-right: calc(var(--my-slider-inner-width)*0.04);
     }}
+    @media (max-width: 380px){
+      .my-slider-item .card-img-top{
+        width: 100%;
+        height: 100%;
+      }
+    }
   </style>
 {% endblock %}
 
@@ -116,7 +129,9 @@
         {% for i in product %}
         <div class="card text-center">
           <a href="/shop/productview/{{i.id}}">
-          <img src="/media/{{i.image}}" class="card-img-top" alt="image not supported">
+            <div class="card-img-top">
+              <img src="/media/{{i.image}}" alt="image not supported">
+            </div>
           <div class="card-body">
             <h6 class="card-title">{{i.product_name}}</h6>
             <p class="card-text">Price:&nbsp;{{i.base_price}}</p>

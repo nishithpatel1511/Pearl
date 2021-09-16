@@ -304,34 +304,33 @@
       text-align: center;
     }
 
-    /*new work from here*/
+    /*new from here*/
 
-    .login-box {
-      display: none;
-      text-align: center;
-      margin: 0;
-      z-index: 1021;
-      top: 0;
-      background: rgba(0, 0, 0, 0.35);
-      position: fixed;
-      width: 100%;
-      height: 100%;
+    .login-title{
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 30px;
     }
-
-    .login-box.active {
-      display: flex;
-    }
-
-    .login-input-box {
-      width: 400px;
-      margin: auto;
-      height: 300px;
+    .login-close{
+      margin: 0!important;
+      padding: 0!important;
+      background: none!important;
       border-radius: 20px;
-      background-color: whitesmoke;
-      padding-top: 10px;
-      box-shadow: 10px 10px 20px grey;
+      opacity: 1;
+      height: 20px;
+      width: 20px;
     }
-
+    .login-close img{
+      cursor: pointer;
+      height: 20px;
+      width: 20px;
+      background-color: black;
+      border-radius: 50%;
+      vertical-align: baseline;
+    }
+    .login-content{
+      border-radius: 25px;
+    }
     .login-form {
       margin-left: auto;
       margin-right: auto;
@@ -352,7 +351,6 @@
       letter-spacing: 0.55px;
       background: none !important;
     }
-
     .login-form input:focus,
     .login-form select:focus {
       outline: none !important;
@@ -360,16 +358,7 @@
       border-width: 2px;
       transition: 1s;
     }
-
-    .btn-login {
-      /*color: #fff;*/
-      color: black;
-      background-color: lightgreen;
-      border-color: lightgreen;
-      border-radius: 15px;
-    }
-
-    .login-input-box .er-msg-login {
+    .er-msg-login{
       margin-top: 8px;
       font-size: x-small;
       color: red;
@@ -377,20 +366,11 @@
       visibility: hidden;
       margin-bottom: 3px;
     }
-
-    .close-login {
-      text-align: end;
+    .btn-login {
       color: black;
-      margin-right: 20px;
-      font-size: large;
-    }
-    .close-login-btn{
-      cursor: pointer;
-      height: 20px;
-      width: 20px;
-      background-color: black;
-      border-radius: 50%;
-      margin-left: auto;
+      background-color: lightgreen;
+      border-color: lightgreen;
+      border-radius: 15px;
     }
     .logout-btn{
       height: 25px;
@@ -399,11 +379,7 @@
       padding-bottom: 2.5px;
       line-height: 1;
     }
-    @media (max-width: 400px) {
-      .login-input-box {
-        width: 96%;
-      }
-    }
+
   </style>
   {% block css %}{% endblock %}
 </head>
@@ -530,13 +506,13 @@
             <div class="my-popover-box">
               
               {% if user.is_authenticated %}
-              <h5 class="user-fname" style="text-decoration: none;text-align: center;color: black; margin-top: 10px;">
+              <h5 class="user-fname" style="text-decoration: none;color: black; margin-top: 10px;">
                 Welcome {{request.user}}</h5>
               <button class="btn-primary logout-btn" onclick="logout_user()">Log Out</button>
               {% else %}
-              <h5 class="user-fname" style="text-decoration: none;text-align: center;color: black; margin-top: 10px;">
+              <h5 class="user-fname" style="text-decoration: none;color: black; margin-top: 10px;">
                 Not Logged In</h5>
-              <div style="text-align: center;"><a class="login-btn ">Log in</a></div>
+              <div><a class="login-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Log In</a></div>
               {% endif %}
             </div>
           </div>
@@ -546,12 +522,17 @@
   </nav>
   <div class="search-background d-none d-lg-block"></div>
 
-  <div class="login-box">
-    <div class="login-input-box">
-      <div class="close-login">
+  <div class="modal fade login-modal" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog login-dialog">
+    <div class="modal-content login-content">
+      <div class="modal-header login-header">
+        <h5 class="modal-title login-title" id="loginModalLabel">Log In</h5>
+        <button type="button" class="btn-close login-close" data-bs-dismiss="modal" aria-label="Close">
           <img  class="close-login-btn" src="{% static 'shop/svgs/close.svg' %}">
+        </button>
       </div>
-      <form class="login-form" onsubmit="event.preventDefault(); login_user();" autocomplete="off">
+      <div class="modal-body login-body">
+        <form class="login-form" onsubmit="event.preventDefault(); login_user();" autocomplete="off">
         <input type="input" id="uname-login" name="username-login" placeholder="Username" autocomplete="">
         </br></br>
         <input type="password" id="passwd-login" name="password-login" placeholder="Password" autocomplete="nope">
@@ -561,9 +542,12 @@
         <div style="margin-top: 10px"><a href="" style="color:blue">Forgot Password?</a></div>
         <div style="margin-top: 10px;"><a href="/shop/signup/" style="color:blue">New User? SignUp</a></div>
       </form>
-
+      </div>
     </div>
   </div>
+</div>
+
+  
 
   {% block body %}{% endblock %}
 
@@ -660,12 +644,12 @@
       $(this).find('.my-popover').toggleClass('active');
     });
 
-    $('.login-btn').click(function () {
-      $('.login-box').addClass('active');
-    });
-    $('.close-login-btn').click(function () {
-      $('.login-box').removeClass('active');
-    });
+    // $('.login-btn').click(function () {
+    //   $('.login-box').addClass('active');
+    // });
+    // $('.close-login-btn').click(function () {
+    //   $('.login-box').removeClass('active');
+    // });
 
     var login_user = function () {
       $.ajax({
