@@ -13,9 +13,10 @@ class Product(models.Model):
     pub_date = models.DateField()
     base_price = models.IntegerField(default=0)
     base_mrp = models.IntegerField(default=0)
-    display_ram = models.BooleanField(default=0)
     base_ram = models.IntegerField(default=0)
-
+    has_storage = models.BooleanField(default="False")
+    display_ram = models.BooleanField(default="False")
+    has_color = models.BooleanField(default="True")
     def __str__(self):
         return self.product_name
 

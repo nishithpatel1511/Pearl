@@ -28,9 +28,9 @@
   	display: flex;
   }
   .small-image-li img{
-  	width: 100%;
-  	margin-top: auto;
-  	margin-bottom: auto;
+  	max-width: 100%;
+  	max-height: 100%;
+  	margin: auto;
   }
   
   .product-view-image-final{
@@ -39,9 +39,9 @@
   	display: flex;
   }
   .product-view-image-final img{
-  	margin-top: auto;
-  	margin-bottom: auto;
-  	width: 100%;
+  	margin: auto;
+  	max-width: 100%;
+  	max-height: 100%;
   }
 
   .product-view-description{
@@ -251,6 +251,7 @@
 			</div>
 
       <!-- Colours of the Product -->
+      {% if product.0.has_color %}
 			<h5>Available colors:</h5>
 			<div class="product-view-description-color">
 				{% for i in product.0.ProductColor.all %}
@@ -259,8 +260,10 @@
 				</div>
 				{% endfor %}
 			</div>
+			{% endif %}
 
 			<!-- sizes of the Product -->
+			{% if product.0.has_color %}
 			<div class="product-view-description-size">
 				<h5>Storage:</h5>
 				<div class="product-size">
@@ -287,7 +290,7 @@
 				</div>
 			</div>
 			{% endif %}
-
+      {% endif %}
 			<div class="product-view-description-details">
 				<h5>Basic Details:</h5>
 				<div class="product-model"><span><b>Model:</b> {{product.0.product_name}}</span></div>

@@ -40,19 +40,23 @@ def productView(request, id):
     prod = Product.objects.filter(id=id)
     conn = sqlite3.connect('db.sqlite3')
     all_images= []
-    for i in list(prod.values('ProductColor')):
-        img_list = []
-        cur = conn.execute(f'''SELECT image FROM shop_productcolorimages WHERE colour_id = {i['ProductColor']}''')
-        for j in cur:
-            img_list.append(j[0])
-        all_images.append(img_list)
-    conn.close()
+    if prod[0].has_color:
+        for i in list(prod.values('ProductColor')):
+            img_list = []
+            cur = conn.execute(f'''SELECT image FROM shop_productcolorimages WHERE colour_id = {i['ProductColor']}''')
+            for j in cur:
+                img_list.append(j[0])
+            all_images.append(img_list)
+        conn.close()
+    else:
+        all_images.append([prod[0].image])
     ram = {}
     rom = {}
-    for i in prod[0].ProductMemoryRom.all():
-        rom[i.rom] = {"price": i.price_diff, "mrp": i.mrp_diff}
-    for i in prod[0].ProductMemoryRam.all():
-        ram[i.ram] = {"price": i.price_diff, "mrp": i.mrp_diff}
+    if prod[0].has_storage:
+        for i in prod[0].ProductMemoryRom.all():
+            rom[i.rom] = {"price": i.price_diff, "mrp": i.mrp_diff}
+        for i in prod[0].ProductMemoryRam.all():
+            ram[i.ram] = {"price": i.price_diff, "mrp": i.mrp_diff}
     params = {'product': prod, 'product_images': all_images, 'ram': ram, 'rom': rom}
     return render(request, 'shop/productview.html', params)
 
