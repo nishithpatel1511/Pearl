@@ -6,6 +6,9 @@
 
 <!-- Write CSS Here -->
 <style>
+    .hide{
+        display: none;
+    }
 </style>
 
 {% endblock %}
@@ -14,6 +17,21 @@
 
 <!-- Write JS Here -->
 <script type="text/javascript">
+    if ($('#id_has_color').is(':checked')){
+        $('#ProductColor-group').css("display","block");
+    }
+    else{
+        $('#ProductColor-group').css("display","none");
+    }
+    $('#id_has_color').click(function (){
+        if ($('#id_has_color').is(':checked')){
+            $('#ProductColor-group').css("display","block");
+        }
+        else{
+            $('#ProductColor-group').css("display","none");
+        }
+       
+    });
 </script>
 
 {% endblock %}
