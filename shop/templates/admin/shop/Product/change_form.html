@@ -3,8 +3,6 @@
 
 {% block extrahead %}{{ block.super }}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<!-- Write CSS Here -->
 <style>
     .hide{
         display: none;
@@ -14,8 +12,6 @@
 {% endblock %}
 
 {% block admin_change_form_document_ready %}
-
-<!-- Write JS Here -->
 <script type="text/javascript">
     if ($('#id_has_color').is(':checked')){
         $('#ProductColor-group').css("display","block");
@@ -29,9 +25,7 @@
         }
         else{
             $('#ProductColor-group').css("display","none");
-        }
-       
+        } 
     });
 </script>
-
 {% endblock %}
