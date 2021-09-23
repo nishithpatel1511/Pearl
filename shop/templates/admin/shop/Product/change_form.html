@@ -15,17 +15,21 @@
 <script type="text/javascript">
     if ($('#id_has_color').is(':checked')){
         $('#ProductColor-group').css("display","block");
+        $('#ProductImages-group').css("display","none");
     }
     else{
         $('#ProductColor-group').css("display","none");
+        $('#ProductImages-group').css("display","block");
     }
     $('#id_has_color').click(function (){
         if ($('#id_has_color').is(':checked')){
             $('#ProductColor-group').css("display","block");
+            $('#ProductImages-group').css("display","none");
         }
         else{
             $('#ProductColor-group').css("display","none");
-        } 
+            $('#ProductImages-group').css("display","block");
+        }
     });
 </script>
 {% endblock %}
