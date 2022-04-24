@@ -563,7 +563,8 @@
       cart = JSON.parse(localStorage.getItem('cart'));
       if(document.getElementById('cart1') != null)
         document.getElementById('cart1').innerHTML = Object.keys(cart).length;
-      document.getElementById('cart2').innerHTML = Object.keys(cart).length;
+      if(document.getElementById('cart2') != null)
+        document.getElementById('cart2').innerHTML = Object.keys(cart).length;
     }else{
       var cart = {};
     }
