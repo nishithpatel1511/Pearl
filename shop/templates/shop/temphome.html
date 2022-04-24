@@ -1,0 +1,288 @@
+{% extends 'shop/basics.html' %}
+
+{% block title %} Home Page{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    
+    .my-slider{
+      touch-action: auto;
+    }
+    .my-slider-title
+    {
+      margin-left: 5%;
+    }
+    .my-slider-item{
+      display: inline-flex;
+      width: auto;
+    }
+    
+    .my-slider-inner{
+      display: block;
+      padding-left: 4%;
+    }
+    
+    .my-slider-control-prev
+    {
+      visibility:hidden;
+    }
+    .my-slider-control-next,
+    .my-slider-control-prev {
+      width: 3.5%;
+    }
+    .my-slider-control-next-icon,
+    .my-slider-control-prev-icon {
+      height:40%;
+      background-color:#212529;
+    }
+    .my-slider-indicators{
+      position: relative;
+      margin-top: 5px;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      margin-right: 15%;
+      margin-bottom: 1rem;
+      margin-left: 15%;
+      list-style: none;
+    }
+    .my-sliderbuttons{
+      box-sizing: content-box;
+      flex: 0 1 auto;
+      width: 30px;
+      height: 3px;
+      padding: 0;
+      margin-right: 3px;
+      margin-left: 3px;
+      text-indent: -999px;
+      cursor: pointer;
+      background-color: #000;
+      background-clip: padding-box;
+      border: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      opacity: .3;
+      transition: opacity .6s ease;
+    }
+    .my-sliderbuttons.active{
+      opacity: 1;
+    }
+    .card-img-top
+    {
+      width: 160px;
+      height: 160px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+    }
+    .card-img-top img{
+      margin: auto;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .card a{
+      text-decoration: none;
+      color: black;
+    }
+    .card a .card-body{
+      padding: 0.4rem;
+    }
+    .card button{
+      margin-bottom: .5rem;
+      padding: .20rem .8rem;
+      font-size: .875rem;
+      border-radius: 1rem;
+    }
+    
+    @media (max-width: 767.99px){
+      .my-slider-item .card {
+        display: inline-block;
+        width:calc(var(--my-slider-inner-width)*0.44) !important;
+        margin-right: calc(var(--my-slider-inner-width)*0.04);
+    }}
+    @media (min-width: 768px) {
+      .my-slider-item .card {
+        display: inline-block;
+        width:calc(var(--my-slider-inner-width)*0.2) !important;
+        margin-right: calc(var(--my-slider-inner-width)*0.04);
+    }}
+    @media (max-width: 380px){
+      .my-slider-item .card-img-top{
+        width: 100%;
+        height: 100%;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+
+
+
+  <div class="carousel my-slider">
+    <h3 class="my-slider-title">My Products</h3>
+    <div class="carousel-inner my-slider-inner">
+      <div class="carousel-item my-slider-item" data-slide="0">
+        {% for product in allProduct %}
+        <div class="card text-center">
+          <a href="{{product.get_absolute_url}}">
+            <div class="card-img-top">
+              <img src="/media/{{product.thumbnail}}" alt="image not supported">
+            </div>
+          <div class="card-body">
+            <h6 class="card-title">{{product.product_name}}</h6>
+            <p class="card-text">Price:&nbsp;{{product.price}}</p>
+          </div>
+          </a>
+          <button type="button" id="prod{{product.id}}" class="btn btn-primary add-cart">Add to Cart</button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="my-slider-indicators d-none d-md-flex">
+        <button type="button" class="my-sliderbuttons active" value="0"></button>
+        {% for i in range4 %}
+        <button type="button" class="my-sliderbuttons" value="{{i}}"></button>
+        {% endfor %}
+    </div>
+    
+    <div class="my-slider-indicators d-md-none">
+        <button type="button" class="my-sliderbuttons active" value="0"></button>
+        {% for i in range2 %}
+        <button type="button" class="my-sliderbuttons" value="{{i}}"></button>
+        {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev my-slider-control-prev" type="button" data-bs-target="#carouselExampleIndicators">
+      <span class="carousel-control-prev-icon my-slider-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next my-slider-control-next" type="button" data-bs-target="#carouselExampleIndicators">
+      <span class="carousel-control-next-icon my-slider-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+{% endblock %}
+
+
+{% block jquery %}
+
+<script type="text/javascript">
+
+  $('.my-slider-item').each(function(){
+
+     $(this).css("--my-slider-inner-width", $(this).parent().outerWidth()+"px");
+     if (($(this).width()) <= ($(this).parent().width()))
+     {
+       $(this).parent().parent().find('.my-slider-control-next').css("visibility","hidden");
+       $(this).parent().parent().find('.my-slider-indicators').css("visibility","hidden");
+     }
+  });
+
+  var funnext = function(){
+    var sw = $(this).parent().find('.my-slider-inner').width();
+    var items = $(this).parent().find('.my-slider-inner .my-slider-item');
+    var nslide= parseInt(items.attr('data-slide'))+1;
+    end = nslide*sw;
+    iw = items.width();
+    if (end <  iw)
+    {
+      if( end+sw > iw)
+      {
+        $(this).css("visibility","hidden");
+        items.css("transform","translateX(-"+((nslide-1)*sw+iw-end)+"px)");
+      }
+      else{
+        items.css("transform","translateX(-"+end+"px)");
+      }
+      $(this).parent().find('.my-slider-control-prev').css("visibility","visible");
+      
+      items.attr("data-slide", nslide);
+      $(this).parent().find('.my-slider-indicators .active').removeClass('active');
+      $(this).parent().find('.my-slider-indicators button:nth-child('+(nslide+1)+')').addClass('active');
+    }
+  };
+
+  var funprev = function(){
+    var sw = $(this).parent().find('.my-slider-inner').width();
+    var items = $(this).parent().find('.my-slider-inner .my-slider-item');
+    var nslide= parseInt(items.attr('data-slide'))-1;
+    if (nslide > (-1))
+    {
+      if (nslide == 0)
+      {
+        $(this).css("visibility","hidden");
+      }
+      $(this).parent().find('.my-slider-control-next').css("visibility","visible");
+      end = nslide * sw;
+      items.css("transform","translateX(-"+end+"px)");
+      $(this).parent().find('.my-slider-indicators .active').removeClass('active');
+      $(this).parent().find('.my-slider-indicators button:nth-child('+(nslide+1)+')').addClass('active');
+      items.attr("data-slide", nslide);
+    }
+  };
+  
+  var funchange = function(){
+
+    bvalue = $(this).val();
+    var items = $(this).parent().parent().find('.my-slider-inner .my-slider-item');
+    $(this).parent().find('.active').removeClass('active');
+    $(this).addClass('active');
+    var sw = items.parent().width();
+    if(bvalue == 0)
+    {
+      $(this).parent().parent().find('.my-slider-control-prev').css("visibility","hidden");
+      $(this).parent().parent().find('.my-slider-control-next').css("visibility","visible");
+      items.css("transform","translateX(-"+(bvalue * sw)+"px)");
+    }
+    else if(bvalue == $(this).parent().find('button:last').val())
+    {
+      $(this).parent().parent().find('.my-slider-control-prev').css("visibility","visible");
+      $(this).parent().parent().find('.my-slider-control-next').css("visibility","hidden");
+      items.css("transform","translateX(-"+(((bvalue-1)*sw)+(items.width()-(bvalue*sw)))+"px)");
+
+    }
+    else{
+      $(this).parent().parent().find('.my-slider-control-prev').css("visibility","visible");
+      $(this).parent().parent().find('.my-slider-control-next').css("visibility","visible");
+      items.css("transform","translateX(-"+(bvalue * sw)+"px)");
+    } 
+    items.attr("data-slide", bvalue);
+  };
+
+
+  $('.my-slider').on('touchstart', function(e)
+  {
+    startx = e.touches[0].clientX;
+    starty = e.touches[0].clientY;
+  });
+
+  $('.my-slider').on('touchend', function(e){
+    endy = e.changedTouches[0].clientY;
+    endx = e.changedTouches[0].clientX;
+    diffx = Math.abs(endx - startx);
+    diffy = Math.abs(endy - starty);
+    if (diffx > diffy) {
+      if (startx < endx) {
+        $(this).find('.my-slider-control-prev').click();
+      }
+      else if (startx > endx) {
+        $(this).find('.my-slider-control-next').click();
+      }
+    }
+  });
+
+  $('.my-slider-control-next').click(funnext);
+  $('.my-slider-control-prev').click(funprev);
+
+
+  $('.my-sliderbuttons').click(funchange);
+
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block extrahead %}{{ block.super }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+<script>
+    $(function () {
+        $(document).on("change", "select#id_category", function () {
+            $.ajax({
+                type:'GET',
+                url:'/ajaxProductSubcategory/',
+                data:{
+                    selected_category_id : $('#id_category').children("option:selected").val()
+                },
+                success:function(data){
+                    console.log(data);
+                }
+            });
+        });
+    });
+</script>
+<!-- $('.field-variant_type').find('.related-widget-wrapper select').children('option:selected') -->
+{% endblock %}

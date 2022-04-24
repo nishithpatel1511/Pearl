@@ -1,7 +1,11 @@
+
+from enum import unique
+from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import sqlite3
 from django.utils.timezone import now
+from numpy import product
 
 conn = sqlite3.connect('db.sqlite3')
 
@@ -65,3 +69,84 @@ class Pearl_Users(AbstractUser):
 
     def get_username(self):
         return self.username
+
+
+class myCategory(models.Model):
+    category_name = models.CharField(max_length=30)
+    timestamp = models.DateField(auto_now=False, auto_now_add=True)
+    update = models.DateField(auto_now=True, auto_now_add=False)
+    def __str__(self) -> str:
+        return self.category_name
+
+class myCategoryVariant(models.Model):
+    category = models.ForeignKey(myCategory, related_name='mycategory', on_delete=models.CASCADE)
+    variant_name = models.CharField(max_length=30)
+    variant_unit = models.CharField(max_length=20, default='')
+    def __str__(self) -> str:
+        return self.variant_name
+
+class myProduct(models.Model):
+    product_name = models.CharField(max_length=20)
+    # category = models.OneToOneField(myCategory,on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(myCategory, on_delete=models.CASCADE, related_name='myproductcategory', blank=True, null=True)
+    price = models.DecimalField(decimal_places=2, max_digits=100)
+    slug = models.SlugField(unique=True)
+    thumbnail = models.ImageField(default='')
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+    def __str__(self) -> str:
+        return self.product_name
+    def get_absolute_url(self):
+        return reverse('temp', kwargs={'slug':self.slug})
+    class Meta:
+        unique_together = ('product_name', 'slug')
+
+class myProductVariant(models.Model):
+    product = models.ForeignKey(myProduct, on_delete=models.CASCADE, related_name='product_variant')
+    variant_type = models.ForeignKey(myCategoryVariant, on_delete=models.CASCADE)
+    unit = models.CharField(max_length=20, default='')
+    def __str__(self) -> str:
+        return str(self.variant_type)
+    class Meta:
+        unique_together = (('product', 'variant_type'))
+class myProductVariantValue(models.Model):
+    variant_type = models.ForeignKey(myProductVariant, on_delete=models.CASCADE, null=True, blank=True, related_name='variant_value')
+    value = models.CharField(max_length=25)
+    def __str__(self) -> str:
+        return self.value
+
+class myCart(models.Model):
+    user = models.OneToOneField(Pearl_Users, on_delete= models.CASCADE, related_name='user', null=False, blank=False, default=None)
+    # items = models.ManyToManyField(myCartItem, null=True, blank=True)
+    # products = models.ManyToManyField(myProduct, null=True, blank=True)
+    total = models.DecimalField(decimal_places=2, max_digits=100, default=0.00)
+    timestamp = models.TimeField(auto_now = False, auto_now_add=True)
+    updated = models.DateTimeField(auto_now = True, auto_now_add=False)
+    def __str__(self) -> str:
+        return self.user.username
+
+class myCartItem(models.Model):
+    cart = models.ForeignKey(myCart, on_delete = models.CASCADE, related_name='my_cart', blank=True, null=True)
+    product = models.ForeignKey(myProduct, on_delete=models.CASCADE, related_name='myproduct')
+    quantity = models.IntegerField(default=1)
+    notes = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False)
+    def __str__(self) -> str:
+        return self.product.product_name
+
+MY_CATEGORIES = {
+    ('size', 'size'),
+    ('color', 'color'),
+    ('package', 'package')
+}
+
+class myVariance(models.Model):
+    product = models.ForeignKey(myProduct, on_delete=models.CASCADE, related_name='myproduct_variance')
+    category = models.CharField(max_length=25, choices=MY_CATEGORIES, default='size')
+    title = models.CharField(max_length=100)
+    price = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=100)
+    timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False)
+    def __str__(self) -> str:
+        return self.title

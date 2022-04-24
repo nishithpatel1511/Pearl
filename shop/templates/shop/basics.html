@@ -556,12 +556,13 @@
     crossorigin="anonymous"></script>
 
   <script type="text/javascript">
-    if (localStorage.getItem('cart') == null)
-      var cart = {};
-    else {
+    if (localStorage.getItem('cart') != null){
       cart = JSON.parse(localStorage.getItem('cart'));
-      document.getElementById('cart1').innerHTML = Object.keys(cart).length;
+      if(document.getElementById('cart1') != null)
+        document.getElementById('cart1').innerHTML = Object.keys(cart).length;
       document.getElementById('cart2').innerHTML = Object.keys(cart).length;
+    }else{
+      var cart = {};
     }
     $('.add-cart').click(function () {
       var prodid = this.id.toString();

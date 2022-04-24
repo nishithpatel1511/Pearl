@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.contrib import admin
 
 from .models import *
@@ -27,3 +28,41 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Pearl_Users)
+
+
+
+		
+
+
+class myCartAdmin(admin.ModelAdmin):
+	readonly_fields = ['updated', 'timestamp']
+	class Meta:
+		model = myCart
+admin.site.register(myCart, myCartAdmin)
+
+admin.site.register(myCartItem)
+admin.site.register(myVariance)
+admin.site.register(myCategory)
+admin.site.register(myCategoryVariant)
+# admin.site.register(myProductVariant)
+
+class myProductVariantValueAdmin(nested_admin.NestedStackedInline):
+	model = myProductVariantValue
+	extra = 0
+
+class myProductVariantAdmin(nested_admin.NestedStackedInline):
+	model = myProductVariant
+	inlines = [myProductVariantValueAdmin]
+	extra = 0
+
+class myProductAdmin(nested_admin.NestedModelAdmin):
+	date_hierarchy = 'timestamp'
+	search_fields = ['product_name']
+	list_display = ('product_name', 'price', 'updated')
+	readonly_fields = ['updated', 'timestamp']
+	prepopulated_fields = {"slug":("product_name",)}
+	inlines = [myProductVariantAdmin]
+	class Meta:
+		model = myProduct
+
+admin.site.register(myProduct, myProductAdmin)
