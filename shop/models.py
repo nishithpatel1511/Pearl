@@ -9,9 +9,15 @@ from numpy import product
 
 conn = sqlite3.connect('db.sqlite3')
 
+product_category = (
+    ('Electronics', 'Electronics'),
+    ('Fashion', 'Fashion'),
+    ('Home', 'Home'),
+)
+
 class Product(models.Model):
     product_name = models.CharField(max_length=50)
-    category = models.CharField(max_length=50, default="")
+    category = models.CharField(max_length=20, choices=product_category)
     subcategory = models.CharField(max_length=50, default="")
     image = models.ImageField(default="")
     pub_date = models.DateField()
@@ -20,14 +26,15 @@ class Product(models.Model):
     base_ram = models.IntegerField(default=0)
     has_storage = models.BooleanField(default="False")
     display_ram = models.BooleanField(default="False")
-    has_color = models.BooleanField(default="True")
+    has_color = models.BooleanField(default="False")
     def __str__(self):
         return self.product_name
-
+class ProductImages(models.Model):
+    product =models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ProductImages')
+    image = models.ImageField(default="")
 class ProductColor(models.Model):
     product = models.ForeignKey(Product, on_delete= models.CASCADE, related_name= 'ProductColor')
     color = models.ImageField(default="")
-
 class ProductColorImages(models.Model):
     colour = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="image_color")
     image = models.ImageField(default="")
@@ -59,8 +66,8 @@ class Pearl_Users(AbstractUser):
     is_customer = models.BooleanField(default=True)
     is_authenticated = True
     is_anonymous = True
-    groups = None
     user_permissions = None
+    groups = None
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'country', 'mobile', 'email', 'date_of_birth']
 

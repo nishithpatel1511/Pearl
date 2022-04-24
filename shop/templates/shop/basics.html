@@ -432,9 +432,12 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Music</a>
         </li>
+        {% if user.is_authenticated %}
         <li class="nav-item d-lg-none">
           <a class="nav-link" href="#">Cart(<span id="cart2">0</span>)</a>
         </li>
+        {% endif %}
+
       </ul>
     </div>
   </nav>
