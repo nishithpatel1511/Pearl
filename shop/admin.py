@@ -1,4 +1,5 @@
 from pyexpat import model
+from typing_extensions import Self
 from django.contrib import admin
 
 from .models import *
@@ -46,8 +47,13 @@ admin.site.register(myCart, myCartAdmin)
 
 admin.site.register(myCartItem)
 admin.site.register(myVariance)
-admin.site.register(myCategory)
-admin.site.register(myCategoryVariant)
+
+class myCatVariantAdmin(admin.StackedInline):
+	model = myCategoryVariant
+	extra = 0
+class myCategoryAdmin(admin.ModelAdmin):
+	inlines = [myCatVariantAdmin]
+admin.site.register(myCategory, myCategoryAdmin)
 # admin.site.register(myProductVariant)
 
 class myProductVariantValueAdmin(nested_admin.NestedStackedInline):
