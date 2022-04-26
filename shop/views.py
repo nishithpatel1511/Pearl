@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Product, Pearl_Users, myCart, myCartItem, myCategoryVariant, myProduct
+from .models import Product, Pearl_Users, myCart, myCartItem, myCategoryVariant, myProduct, myProductVariantValue
 from math import ceil
 from django.urls import reverse
 
@@ -172,7 +172,12 @@ def updateMyCart(request, slug):
             notes = {}
             try:
                 for variant in product.product_variant.all():
-                    notes[str(variant)] = request.GET.get(str(variant))
+                    if (variant.unit) != None and variant.unit != 'None':
+                        notes[str(variant)] = variant.unit
+                    else:
+                        notes[str(variant)] = ''
+                    # notes[str(variant)] = request.GET.get(str(variant))
+                    notes[str(variant)] = str(myProductVariantValue.objects.get(id = request.GET.get(str(variant)))) + notes[str(variant)]
             except:
                 notes['color'] = None
             

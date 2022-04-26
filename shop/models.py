@@ -111,7 +111,7 @@ class myProduct(models.Model):
 class myProductVariant(models.Model):
     product = models.ForeignKey(myProduct, on_delete=models.CASCADE, related_name='product_variant')
     variant_type = models.ForeignKey(myCategoryVariant, on_delete=models.CASCADE)
-    unit = models.CharField(max_length=20, default='')
+    unit = models.CharField(max_length=20, default='', null=True, blank=True)
     def __str__(self) -> str:
         return str(self.variant_type)
     class Meta:
