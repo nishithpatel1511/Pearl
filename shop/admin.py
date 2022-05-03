@@ -1,7 +1,4 @@
-from pyexpat import model
-from typing_extensions import Self
 from django.contrib import admin
-
 from .models import *
 import nested_admin
 
@@ -72,6 +69,10 @@ class myProductAdmin(nested_admin.NestedModelAdmin):
 	readonly_fields = ['updated', 'timestamp']
 	prepopulated_fields = {"slug":("product_name",)}
 	inlines = [myProductVariantAdmin]
+	def get_formsets_with_inlines(self, request, obj=None):
+		for inline in self.get_inline_instances(request, obj):
+			if not isinstance(inline, myProductVariantAdmin) or obj is not None:
+				yield inline.get_formset(request, obj), inline
 	class Meta:
 		model = myProduct
 
