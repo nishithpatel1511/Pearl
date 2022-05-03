@@ -61,6 +61,10 @@ class myProductVariantAdmin(nested_admin.NestedStackedInline):
 	model = myProductVariant
 	inlines = [myProductVariantValueAdmin]
 	extra = 0
+	def formfield_for_foreignkey(self, db_field, request, **kwargs):
+		if db_field.name == 'variant_type':
+			kwargs["queryset"] = myCategoryVariant.objects.filter(category = 1)
+		return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class myProductAdmin(nested_admin.NestedModelAdmin):
 	date_hierarchy = 'timestamp'
