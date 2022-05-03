@@ -63,7 +63,13 @@ class myProductVariantAdmin(nested_admin.NestedStackedInline):
 	extra = 0
 	def formfield_for_foreignkey(self, db_field, request, **kwargs):
 		if db_field.name == 'variant_type':
-			kwargs["queryset"] = myCategoryVariant.objects.filter(category = 1)
+			try:
+				product_id = request.resolver_match.kwargs.get('object_id')
+				product = myProduct.objects.get(id = product_id)
+				if product:
+					kwargs["queryset"] = myCategoryVariant.objects.filter(category = product.category)
+			except:
+				pass
 		return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class myProductAdmin(nested_admin.NestedModelAdmin):
