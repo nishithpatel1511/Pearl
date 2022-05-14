@@ -1,5 +1,5 @@
 
-from unicodedata import category
+from time import time, sleep
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -107,7 +107,7 @@ class myProduct(models.Model):
     def save(self, *args, **kwargs):
         if self.pk != None:
             if myProduct.objects.get(pk = self.pk).category != self.category:
-                myProductVariant.objects.filter(product = self.pk).delete()
+                print(myProductVariant.objects.filter(product = self.pk).delete())
         super().save(*args, **kwargs)
         
     class Meta:
