@@ -1,11 +1,10 @@
 
-from time import time, sleep
+from time import time
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import sqlite3
 from django.utils.timezone import now
-from numpy import product
 
 conn = sqlite3.connect('db.sqlite3')
 
