@@ -1,11 +1,10 @@
 
-from enum import unique
+from unicodedata import category
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import sqlite3
 from django.utils.timezone import now
-from numpy import product
 
 conn = sqlite3.connect('db.sqlite3')
 
@@ -105,6 +104,12 @@ class myProduct(models.Model):
         return self.product_name
     def get_absolute_url(self):
         return reverse('temp', kwargs={'slug':self.slug})
+    def save(self, *args, **kwargs):
+        if self.pk != None:
+            if myProduct.objects.get(pk = self.pk).category != self.category:
+                myProductVariant.objects.filter(product = self.pk).delete()
+        super().save(*args, **kwargs)
+        
     class Meta:
         unique_together = ('product_name', 'slug')
 
