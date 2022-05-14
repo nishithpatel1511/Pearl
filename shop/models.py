@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 import sqlite3
 from django.utils.timezone import now
+from numpy import product
 
 conn = sqlite3.connect('db.sqlite3')
 
@@ -106,11 +107,10 @@ class myProduct(models.Model):
         return reverse('temp', kwargs={'slug':self.slug})
     def save(self, *args, **kwargs):
         if self.pk != None and myProduct.objects.get(pk = self.pk).category != self.category:
-            print(myProductVariant.objects.filter(product = self.pk).delete())
+            myProductVariant.objects.filter(product = self.pk).delete()
             super().save(*args, **kwargs, update_fields=['category'])
         else:
             super().save(*args, **kwargs)
-        
     class Meta:
         unique_together = ('product_name', 'slug')
 
@@ -120,13 +120,20 @@ class myProductVariant(models.Model):
     unit = models.CharField(max_length=20, default='', null=True, blank=True)
     def __str__(self) -> str:
         return str(self.variant_type)
+    def save(self, *args, **kwargs):
+        if self.product.category == self.variant_type.category:
+            super().save(*args, **kwargs)
+
     class Meta:
-        unique_together = (('product', 'variant_type'))
+        unique_together = (('product', 'variant_type'))  
 class myProductVariantValue(models.Model):
     variant_type = models.ForeignKey(myProductVariant, on_delete=models.CASCADE, null=True, blank=True, related_name='variant_value')
     value = models.CharField(max_length=25)
     def __str__(self) -> str:
         return self.value
+    def save(self, *args, **kwargs):
+        if self.variant_type.product.category == self.variant_type.variant_type.category:
+            super().save(*args, **kwargs)
 
 class myCart(models.Model):
     user = models.OneToOneField(Pearl_Users, on_delete= models.CASCADE, related_name='user', null=False, blank=False, default=None)
