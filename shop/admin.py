@@ -1,3 +1,4 @@
+
 from django.contrib import admin
 from .models import *
 import nested_admin
@@ -71,14 +72,23 @@ class myProductVariantAdmin(nested_admin.NestedStackedInline):
 			except:
 				pass
 		return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
+class myProductColorImagesInline(nested_admin.NestedStackedInline):
+	model = myProductColorImages
+	extra = 0
+class myProductColorInline(nested_admin.NestedStackedInline):
+	model = myProductColor
+	inlines = [myProductColorImagesInline]
+	extra = 0
+class myProductImageInline(nested_admin.NestedStackedInline):
+	model = myProductImages
+	extra = 0
 class myProductAdmin(nested_admin.NestedModelAdmin):
 	date_hierarchy = 'timestamp'
 	search_fields = ['product_name']
 	list_display = ('product_name', 'price', 'updated')
 	readonly_fields = ['updated', 'timestamp']
 	prepopulated_fields = {"slug":("product_name",)}
-	inlines = [myProductVariantAdmin]
+	inlines = [myProductColorInline, myProductImageInline, myProductVariantAdmin]
 	def get_formsets_with_inlines(self, request, obj=None):
 		for inline in self.get_inline_instances(request, obj):
 			if not isinstance(inline, myProductVariantAdmin) or obj is not None:

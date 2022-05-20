@@ -97,6 +97,7 @@ class myProduct(models.Model):
     # category = models.OneToOneField(myCategory,on_delete=models.CASCADE, blank=True, null=True)
     category = models.ForeignKey(myCategory, on_delete=models.CASCADE, related_name='myproductcategory', blank=True, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=100)
+    has_colour_option = models.BooleanField(default=False) #new added
     slug = models.SlugField(unique=True)
     thumbnail = models.ImageField(default='')
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -134,7 +135,24 @@ class myProductVariantValue(models.Model):
     def save(self, *args, **kwargs):
         if self.variant_type.product.category == self.variant_type.variant_type.category:
             super().save(*args, **kwargs)
-
+# New Work From Here
+class myProductColor(models.Model):
+    product = models.ForeignKey(myProduct, on_delete=models.CASCADE, related_name='my_product_color')
+    color_name= models.CharField(max_length=30)
+    color_image =models.ImageField()
+    show_only_image = models.BooleanField(default=False)
+    show_only_name = models.BooleanField(default=False)
+    def __str__(self) -> str:
+        return self.color_name
+class myProductColorImages(models.Model):
+    color = models.ForeignKey(myProductColor, on_delete=models.CASCADE, related_name='my_product_color_images')
+    image = models.ImageField()
+    def __str__(self) -> str:
+        return str(self.image)
+class myProductImages(models.Model):
+    product = models.ForeignKey(myProduct, on_delete=models.CASCADE, related_name='my_product_images')
+    image = models.ImageField()
+# end of New add
 class myCart(models.Model):
     user = models.OneToOneField(Pearl_Users, on_delete= models.CASCADE, related_name='user', null=False, blank=False, default=None)
     # items = models.ManyToManyField(myCartItem, null=True, blank=True)

@@ -9,6 +9,28 @@
 <script>
     
     var category = $('#id_category').children("option:selected").val();
+
+    if ($('#id_has_colour_option').is(':checked')){
+        
+        $('#my_product_color-group').css("display","block");
+        $('#myproductimages_set-group').css("display","none");
+    }
+    else{
+        
+        $('#my_product_color-group').css("display","none");
+        $('#myproductimages_set-group').css("display","block");
+    }
+    $('#id_has_colour_option').click(function (){
+        if ($('#id_has_colour_option').is(':checked')){
+            $('#my_product_color-group').css("display","block");
+            $('#myproductimages_set-group').css("display","none");
+        }
+        else{
+            $('#my_product_color-group').css("display","none");
+            $('#myproductimages_set-group').css("display","block");
+        }
+    });
+
     $(function () {
         $(document).on("change", "select#id_category", function () {
             // $.ajax({

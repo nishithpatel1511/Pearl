@@ -13,6 +13,7 @@ urlpatterns = [
     path('signup/', views.signup, name="signup"),
     path('uname/', views.username_validation, name= "unamevalidation"),
     path('login/', views.login_validate, name="login"),
+    path('loginpage/', views.login_page, name='loginpage'),
     path('logout/', views.logout_validate, name="logout"),
     path('ajax_email_signup/', views.ajax_email_signup, name="ajax_email_signup"),
     path('ajax_mobile_signup/', views.ajax_mobile_signup, name="ajax_mobile_signup"),
@@ -22,5 +23,6 @@ urlpatterns = [
     path('mycart/', views.myCartView, name='mycart'),
     path('mycart/<slug>/', views.updateMyCart, name='mycartupdate'),
     path('ajaxProductSubcategory/', views.myCategoryOption, name="getProductSubcategory"),
+    path('product_images/', views.productImages),
 
 ]

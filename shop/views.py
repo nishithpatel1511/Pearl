@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Product, Pearl_Users, myCart, myCartItem, myCategoryVariant, myProduct, myProductVariantValue
+from .models import Product, Pearl_Users, myCart, myCartItem, myCategoryVariant, myProduct, myProductColor, myProductVariantValue
 from math import ceil
 from django.urls import reverse
 
@@ -99,6 +99,9 @@ def login_validate(request):
     else:
         return HttpResponse("404-Page Not Found")
 
+def login_page(request):
+    return render(request, 'shop/login.html')
+
 def logout_validate(request):
     try:
         logout(request)
@@ -149,7 +152,7 @@ def myCartView(request):
         cart = {'cart':cart}
         return render(request, 'shop/tempcart.html', cart)
     else:
-        return HttpResponseRedirect(reverse('signup'))
+        return HttpResponseRedirect(reverse('loginpage'))
 
 def updateMyCart(request, slug):
     if request.user.is_authenticated:
@@ -159,9 +162,6 @@ def updateMyCart(request, slug):
         except:
             qty = 1
             update_qty = False
-
-       
-            
         try:
             cart = myCart.objects.get(user = request.user)
         except:
@@ -178,6 +178,7 @@ def updateMyCart(request, slug):
                         notes[str(variant)] = ''
                     # notes[str(variant)] = request.GET.get(str(variant))
                     notes[str(variant)] = str(myProductVariantValue.objects.get(id = request.GET.get(str(variant)))) + notes[str(variant)]
+                notes['color'] = str(request.GET.get('color'))
             except:
                 notes['color'] = None
             
@@ -201,7 +202,7 @@ def updateMyCart(request, slug):
             return HttpResponse("None")
     
     else:
-        return HttpResponse('Not Logged In')
+        return render(request, 'shop/login.html')
 
 def myCategoryOption(request):
     options = '<option value="" selected>---------</option>'
@@ -213,3 +214,23 @@ def myCategoryOption(request):
         return HttpResponse(options)
     except:
         return HttpResponse(options)
+
+def productImages(request):
+    try:
+        id = request.GET.get('color')
+        color = myProductColor.objects.get(id=id)
+        rs = f'<ul class="product-view-image-list" id="color_{id}_images">'
+        ctrl = ''
+        cnt = 1
+        for image in color.my_product_color_images.all():
+            if cnt == 1:
+                ctrl += f'<button type="button" class="my-sliderbuttons active" id="ctrl_btn_{cnt}"></button>'
+            else:
+                ctrl += f'<button type="button" class="my-sliderbuttons" id="ctrl_btn_{cnt}"></button>'
+            rs += f'<li class="small-image-li"> <img src="/media/{image.image}"></li>'
+            cnt += 1
+        rs += '</ul>'
+        return HttpResponse(rs+'\n'+ctrl)
+    except:
+        return HttpResponse('')
+
