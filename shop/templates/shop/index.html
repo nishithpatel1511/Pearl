@@ -113,7 +113,6 @@
     @media (max-width: 380px){
       .my-slider-item .card-img-top{
         width: 100%;
-        height: 100%;
       }
     }
   </style>
@@ -128,16 +127,15 @@
       <div class="carousel-item my-slider-item" data-slide="0">
         {% for i in product %}
         <div class="card text-center">
-          <a href="/shop/productview/{{i.id}}">
+          <a href="{{i.get_absolute_url}}">
             <div class="card-img-top">
-              <img src="/media/{{i.image}}" alt="image not supported">
+              <img src="/media/{{i.thumbnail}}" alt="image not supported">
             </div>
           <div class="card-body">
             <h6 class="card-title">{{i.product_name}}</h6>
-            <p class="card-text">Price:&nbsp;{{i.base_price}}</p>
+            <p class="card-text">Price:&nbsp;{{i.price}}</p>
           </div>
           </a>
-          <button type="button" id="prod{{i.id}}" class="btn btn-primary add-cart">Add to Cart</button>
         </div>
         {% endfor %}
       </div>

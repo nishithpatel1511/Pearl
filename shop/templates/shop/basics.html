@@ -434,7 +434,7 @@
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item d-lg-none">
-          <a class="nav-link" href="#">Cart(<span id="cart2">0</span>)</a>
+          <a class="nav-link" href="#">Cart(<span id="cart2">{{user.user_cart.cart_items.all.count}}</span>)</a>
         </li>
         {% endif %}
 
@@ -492,9 +492,12 @@
         </div>
 
         {% if user.is_authenticated %}
-        <a class="cart-btn" href="#">
+        {% for i in user.user_cart.all %}
+            {{forloop.counter}}
+        {% endfor %}
+        <a class="cart-btn d-none d-lg-block" href="{% url 'cart' %}">
           <img class="cart-logo" src="{% static 'shop/svgs/bag.svg' %}">
-          <span id="cart1" class="cart-no">0</span>
+          <span id="cart1" class="cart-no">{{user.user_cart.cart_items.all.count}}</span>
           <div class="my-popover">
             <img src="{% static 'shop/svgs/uparr.svg' %}">
             <div class="my-popover-box">
@@ -559,25 +562,6 @@
     crossorigin="anonymous"></script>
 
   <script type="text/javascript">
-    if (localStorage.getItem('cart') != null){
-      cart = JSON.parse(localStorage.getItem('cart'));
-      if(document.getElementById('cart1') != null)
-        document.getElementById('cart1').innerHTML = Object.keys(cart).length;
-      if(document.getElementById('cart2') != null)
-        document.getElementById('cart2').innerHTML = Object.keys(cart).length;
-    }else{
-      var cart = {};
-    }
-    $('.add-cart').click(function () {
-      var prodid = this.id.toString();
-      if (cart[prodid] != undefined)
-        cart[prodid] = cart[prodid] + 1;
-      else
-        cart[prodid] = 1;
-      localStorage.setItem('cart', JSON.stringify(cart));
-      document.getElementById('cart1').innerHTML = Object.keys(cart).length;
-      document.getElementById('cart2').innerHTML = Object.keys(cart).length;
-    });
 
     //logic for search
     $('.search-panel .search-icon.disable').click(function () {
@@ -641,9 +625,6 @@
     });
 
     $('.user-btn').click(function () {
-      $(this).find('.my-popover').toggleClass('active');
-    });
-    $('.cart-btn').click(function () {
       $(this).find('.my-popover').toggleClass('active');
     });
 

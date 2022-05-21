@@ -5,21 +5,19 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
+from matplotlib import category
 
-from .models import Product, Pearl_Users, myCart, myCartItem, myCategoryVariant, myProduct, myProductColor, myProductVariantValue
+# from .models import Product, Pearl_Users, Cart, CartItem, CategoryVariant, Product, ProductColor, ProductVariantValue
+from .models import *
 from math import ceil
 from django.urls import reverse
 
 
-import sqlite3
-
-
 def index(request):
     allprods =[]
-    catprods = Product.objects.values('category', 'id')
-    cats = sorted({item['category'] for item in catprods}) 
-    for cat in cats:
-        prod = Product.objects.filter(category=cat)
+    categorys = Category.objects.all()
+    for cat in categorys:
+        prod = Product.objects.filter(category=cat.id)
         n = len(prod)
         n2 = n // 2 + ceil((n / 2) - n // 2)
         n = n // 4 + ceil((n / 4) - n // 4)
@@ -37,31 +35,10 @@ def contact(request):
 def tracker(request):
     return HttpResponse("tracker")
 
-
-def productView(request, id):
-
-    prod = Product.objects.filter(id=id)
-    conn = sqlite3.connect('db.sqlite3')
-    all_images= []
-    if prod[0].has_color:
-        for i in list(prod.values('ProductColor')):
-            img_list = []
-            cur = conn.execute(f'''SELECT image FROM shop_productcolorimages WHERE colour_id = {i['ProductColor']}''')
-            for j in cur:
-                img_list.append(j[0])
-            all_images.append(img_list)
-        conn.close()
-    else:
-        all_images.append([prod[0].image])
-    ram = {}
-    rom = {}
-    if prod[0].has_storage:
-        for i in prod[0].ProductMemoryRom.all():
-            rom[i.rom] = {"price": i.price_diff, "mrp": i.mrp_diff}
-        for i in prod[0].ProductMemoryRam.all():
-            ram[i.ram] = {"price": i.price_diff, "mrp": i.mrp_diff}
-    params = {'product': prod, 'product_images': all_images, 'ram': ram, 'rom': rom}
-    return render(request, 'shop/productview.html', params)
+def productView(request,slug):
+    product = Product.objects.get(slug = slug)
+    product = {'product':product}
+    return render(request, 'shop/productview.html', product)
 
 def search(request):
     return HttpResponse("Search")
@@ -130,31 +107,22 @@ def ajax_mobile_signup(request):
             return HttpResponse("valid")
 
 def temp(request,slug):
-    product = myProduct.objects.get(slug = slug)
+    product = Product.objects.get(slug = slug)
     product = {'product':product}
     return render(request, 'shop/temp.html', product)
 
-
-def temphome(request):
-    allProduct = myProduct.objects.all()
-    n= len(allProduct)
-    n2 = n // 2 + ceil((n / 2) - n // 2)
-    n = n // 4 + ceil((n / 4) - n // 4)
-    allProduct  = {'allProduct': allProduct, 'range4':range(1,n), 'range2':range(1,n2), 'n':n}
-    return render(request, 'shop/temphome.html', allProduct)
-
-def myCartView(request):
+def CartView(request):
     if request.user.is_authenticated:
         try:
-            cart = myCart.objects.get(user = request.user)
+            cart = Cart.objects.get(user = request.user)
         except:
-            cart = myCart.objects.create(user = request.user)
+            cart = Cart.objects.create(user = request.user)
         cart = {'cart':cart}
-        return render(request, 'shop/tempcart.html', cart)
+        return render(request, 'shop/cart.html', cart)
     else:
         return HttpResponseRedirect(reverse('loginpage'))
 
-def updateMyCart(request, slug):
+def updateCart(request, slug):
     if request.user.is_authenticated:
         try:
             qty = request.GET.get('qty')
@@ -163,12 +131,12 @@ def updateMyCart(request, slug):
             qty = 1
             update_qty = False
         try:
-            cart = myCart.objects.get(user = request.user)
+            cart = Cart.objects.get(user = request.user)
         except:
-            cart = myCart.objects.create(user = request.user)
+            cart = Cart.objects.create(user = request.user)
         try:
-            product = myProduct.objects.get(slug = slug)
-            cart_item, created = myCartItem.objects.get_or_create(cart = cart, product = product)
+            product = Product.objects.get(slug = slug)
+            cart_item, created = CartItem.objects.get_or_create(cart = cart, product = product)
             notes = {}
             try:
                 for variant in product.product_variant.all():
@@ -177,7 +145,7 @@ def updateMyCart(request, slug):
                     else:
                         notes[str(variant)] = ''
                     # notes[str(variant)] = request.GET.get(str(variant))
-                    notes[str(variant)] = str(myProductVariantValue.objects.get(id = request.GET.get(str(variant)))) + notes[str(variant)]
+                    notes[str(variant)] = str(ProductVariantValue.objects.get(id = request.GET.get(str(variant)))) + notes[str(variant)]
                 notes['color'] = str(request.GET.get('color'))
             except:
                 notes['color'] = None
@@ -193,36 +161,25 @@ def updateMyCart(request, slug):
                 pass
             
             new_total = 0
-            for item in cart.my_cart.all():
+            for item in cart.cart_items.all():
                 new_total += (item.product.price * item.quantity)
             cart.total = new_total
             cart.save()
-            return HttpResponseRedirect(reverse('mycart'))
+            return HttpResponseRedirect(reverse('cart'))
         except:
             return HttpResponse("None")
     
     else:
         return render(request, 'shop/login.html')
 
-def myCategoryOption(request):
-    options = '<option value="" selected>---------</option>'
-    try:
-        cat = request.GET.get('selected_category_id')
-        optn = myCategoryVariant.objects.filter(category = cat)
-        for item in optn:
-            options += f'<option value="{item.id}">{item}</option>' 
-        return HttpResponse(options)
-    except:
-        return HttpResponse(options)
-
 def productImages(request):
     try:
         id = request.GET.get('color')
-        color = myProductColor.objects.get(id=id)
+        color = ProductColor.objects.get(id=id)
         rs = f'<ul class="product-view-image-list" id="color_{id}_images">'
         ctrl = ''
         cnt = 1
-        for image in color.my_product_color_images.all():
+        for image in color.color_images.all():
             if cnt == 1:
                 ctrl += f'<button type="button" class="my-sliderbuttons active" id="ctrl_btn_{cnt}"></button>'
             else:

@@ -247,7 +247,7 @@
 			<div class="product-view-image-col">
 				{% if product.has_colour_option %}
 				<ul class="product-view-image-list" id="color_{{c.id}}_images">
-					{%for image in product.my_product_color.all.0.my_product_color_images.all %}
+					{%for image in product.product_color.all.0.color_images.all %}
 					<li class="small-image-li">
 						<img src="/media/{{image.image}}">
 					</li>
@@ -255,7 +255,7 @@
 				</ul>
 				{% else %}
 				<ul class="product-view-image-list">
-					{%for image in product.my_product_images.all %}
+					{%for image in product.product_images.all %}
 					<li class="small-image-li">
 						<img src="/media/{{image.image}}">
 					</li>
@@ -266,11 +266,11 @@
 
 			<!-- Product Big image -->
 			<div class="product-view-image-final">
-				<img src="/media/{{product.my_product_color.all.0.my_product_color_images.all.0.image}}">
+				<img src="/media/{{product.product_color.all.0.color_images.all.0.image}}">
 			</div>
 
 			<div class="images-control">
-				{%for j in product.my_product_color.all.0.my_product_color_images.all %}
+				{%for j in product.product_color.all.0.color_images.all %}
 				{% if forloop.counter == 1 %}
 				<button type="button" class="my-sliderbuttons active" id="ctrl_btn_{{forloop.counter}}"></button>
 				{% else %}
@@ -292,7 +292,7 @@
 				<!-- <p class="product-yousave"><b>You Save: </b><span></span>%</p> -->
 			</div>
 
-			<form class="product-variant-form" action="{% url 'mycartupdate' product.slug %}?">
+			<form class="product-variant-form" action="{% url 'cartupdate' product.slug %}?">
 				<div class="mb-3">
 					<label class="form-label">Quantity</label>
 					<input type="number" name="qty" class="form-control" placeholder="1" value="1" min="0">
@@ -301,7 +301,7 @@
 				<div class="mb-3">
 					<label class="form-label">Color</label>
 					<select class="form-select" name="color" id="id_color">
-						{% for val in product.my_product_color.all %}
+						{% for val in product.product_color.all %}
 						<option value="color_{{val.id}}">{{val}}</option>
 						{% endfor %}
 					</select>
