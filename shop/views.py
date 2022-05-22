@@ -136,20 +136,31 @@ def updateCart(request, slug):
             cart = Cart.objects.create(user = request.user)
         try:
             product = Product.objects.get(slug = slug)
-            cart_item, created = CartItem.objects.get_or_create(cart = cart, product = product)
-            notes = {}
             try:
-                for variant in product.product_variant.all():
-                    if (variant.unit) != None and variant.unit != 'None':
-                        notes[str(variant)] = variant.unit
-                    else:
-                        notes[str(variant)] = ''
-                    # notes[str(variant)] = request.GET.get(str(variant))
-                    notes[str(variant)] = str(ProductVariantValue.objects.get(id = request.GET.get(str(variant)))) + notes[str(variant)]
-                notes['color'] = str(request.GET.get('color'))
+                itm = request.GET.get('item')
+                cart_item = CartItem.objects.get(pk = itm)
             except:
-                notes['color'] = None
-            
+                notes = '('
+                if product.has_colour_option:
+                    notes += (str(ProductColor.objects.get(id = str(request.GET.get('color')).split('_')[1])) + ", ")
+                for variant in product.product_variant.all():
+                    
+                    if (variant.unit) != None and variant.unit != 'None':
+                        notes += (str(ProductVariantValue.objects.get(id = request.GET.get(str(variant)))) + f"{variant.unit}, ")
+                        # notes[str(variant)] = variant.unit
+                    else:
+                        notes += (str(ProductVariantValue.objects.get(id = request.GET.get(str(variant)))) + ", ")
+                    # notes[str(variant)] = str(ProductVariantValue.objects.get(id = request.GET.get(str(variant)))) + notes[str(variant)]
+                notes = notes[:-2]+')'
+                cart_item, created = CartItem.objects.get_or_create(cart = cart, product = product, notes = notes)
+                
+                if created:
+                    for variant in product.product_variant.all():
+                        CartItemVariant.objects.create(item = cart_item, variant = ProductVariantValue.objects.get(id = request.GET.get(str(variant))))
+                    if product.has_colour_option:
+                        CartItemColor.objects.create(item = cart_item, color = ProductColor.objects.get(id = str(request.GET.get('color')).split('_')[1]))
+                        
+
             if int(qty) == 0 and update_qty:
                 cart_item.delete()
                 # cart.my_cart.remove(cart_item)

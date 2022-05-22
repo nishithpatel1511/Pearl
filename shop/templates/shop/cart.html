@@ -23,7 +23,7 @@
                 <td>{{item.product.price}}</td>
                 <td>{{item.quantity}}</td>
                 <td>{{item.notes}}</td>
-                <td><a href="{% url 'cartupdate' item.product.slug %}?qty=0">Remove</a></td>
+                <td><a href="{% url 'cartupdate' item.product.slug %}?qty=0&item={{item.id}}">Remove</a></td>
             </tr>
         {% endfor %}
     </table>

@@ -1,5 +1,8 @@
 
+from operator import itemgetter
+from pyexpat import model
 from time import time
+from unicodedata import name
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -121,3 +124,11 @@ class CartItem(models.Model):
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     def __str__(self) -> str:
         return self.product.product_name
+
+class CartItemVariant(models.Model):
+    item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='cart_item_variant')
+    variant = models.ForeignKey(ProductVariantValue, on_delete=models.CASCADE, related_name='cart_variant_value')
+class CartItemColor(models.Model):
+    item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='cart_item_color')
+    color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name='cart_color_value')
+    
