@@ -123,12 +123,13 @@ class CartItem(models.Model):
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     def __str__(self) -> str:
-        return self.product.product_name
+        return f"{self.product.product_name} {self.notes}"
 
 class CartItemVariant(models.Model):
     item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='cart_item_variant')
     variant = models.ForeignKey(ProductVariantValue, on_delete=models.CASCADE, related_name='cart_variant_value')
+    def __str__(self) -> str:
+        return f"{self.item.product.product_name} ({self.variant.value})"
 class CartItemColor(models.Model):
     item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='cart_item_color')
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name='cart_color_value')
-    
