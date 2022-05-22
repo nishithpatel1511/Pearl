@@ -61,8 +61,6 @@ class myCartAdmin(admin.ModelAdmin):
 admin.site.register(Cart, myCartAdmin)
 
 admin.site.register(CartItem)
-admin.site.register(CartItemVariant)
-admin.site.register(CartItemColor)
 
 
 

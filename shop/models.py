@@ -1,12 +1,8 @@
 
-from operator import itemgetter
-from pyexpat import model
 from time import time
-from unicodedata import name
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-import sqlite3
 from django.utils.timezone import now
 
 class Pearl_Users(AbstractUser):
