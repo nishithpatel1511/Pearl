@@ -3,7 +3,11 @@ from django.contrib import admin
 from .models import *
 import nested_admin
 
-admin.site.register(Pearl_Users)
+admin.site.site_header = 'Pearl Administration'
+
+class UserAdmin(admin.ModelAdmin):
+	readonly_fields = ['password']
+admin.site.register(Pearl_Users, UserAdmin)
 
 class CategoryVariantInline(admin.StackedInline):
 	model = CategoryVariant
