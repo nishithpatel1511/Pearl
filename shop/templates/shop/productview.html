@@ -266,7 +266,11 @@
 
 			<!-- Product Big image -->
 			<div class="product-view-image-final">
+				{% if product.has_colour_option %}
 				<img src="/media/{{product.product_color.all.0.color_images.all.0.image}}">
+				{% else %}
+				<img src="/media/{{product.product_images.all.0.image}}">
+				{% endif %}
 			</div>
 
 			<div class="images-control">

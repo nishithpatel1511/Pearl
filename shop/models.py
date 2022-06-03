@@ -1,9 +1,12 @@
 
+from email.policy import default
 from time import time
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.timezone import now
+from django.core.files.storage import default_storage
+from requests import delete
 
 class Pearl_Users(AbstractUser):
     first_name = models.CharField(max_length=50)
@@ -64,6 +67,17 @@ class Product(models.Model):
             super().save(*args, **kwargs, update_fields=['category'])
         else:
             super().save(*args, **kwargs)
+    def delete(self):
+        default_storage.delete(self.thumbnail.path)
+        if self.has_colour_option:
+            for c in self.product_color.all():
+                default_storage.delete(c.color_image.path)
+                for i in c.color_images.all():
+                    default_storage.delete(i.image.path)
+        else:
+            for i in self.product_images.all():
+                default_storage.delete(i.image.path)
+        return super().delete()
     class Meta:
         unique_together = ('product_name', 'slug')
 class ProductVariant(models.Model):
