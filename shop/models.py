@@ -1,12 +1,10 @@
 
-from email.policy import default
 from time import time
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.timezone import now
 from django.core.files.storage import default_storage
-from requests import delete
 
 class Pearl_Users(AbstractUser):
     first_name = models.CharField(max_length=50)
