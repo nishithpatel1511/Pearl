@@ -540,7 +540,7 @@
         </button>
       </div>
       <div class="modal-body login-body">
-        <form class="login-form" onsubmit="event.preventDefault(); login_user();" autocomplete="off">
+        <form class="login-form" onsubmit="event.preventDefault(); login_user($('#uname-login').val(), $('#passwd-login').val());" autocomplete="off">
         <input type="input" id="uname-login" name="username-login" placeholder="Username" autocomplete="">
         </br></br>
         <input type="password" id="passwd-login" name="password-login" placeholder="Password" autocomplete="nope">
@@ -628,18 +628,18 @@
       $(this).find('.my-popover').toggleClass('active');
     });
 
-    var login_user = function () {
+    var login_user = function (eusername, epassword) {
       $.ajax({
         type: 'POST',
         url: '/login/',
         data: {
-          username_login: $('#uname-login').val(),
-          password_login: $('#passwd-login').val()
+          username_login: eusername,
+          password_login: epassword
         },
         success: function (data) {
           if (data == 'valid') {
             $('.er-msg-login').css('visibility', 'hidden');
-            location.reload();
+            location.replace("{% url 'ShopHome' %}");
           }
           else if (data == 'invalid') {
             $('.er-msg-login').css('visibility', 'visible');

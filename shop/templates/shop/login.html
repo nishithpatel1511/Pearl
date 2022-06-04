@@ -1,28 +1,38 @@
 {% extends 'shop/basics.html' %}
 {% block title %}Login{% endblock %}
-{% block css %} 
+{% block css %}
 <style>
-    form{
-        width: 60%;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 25px;
-    }
+  form {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+  }
 </style>
 {% endblock %}
 {% block body %}
-<form>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Username</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+{% load static %}
+<div class="modal-dialog login-dialog">
+  <div class="modal-content login-content">
+    <div class="modal-header login-header">
+      <h5 class="login-title" id="loginModalLabel">Log In</h5>
     </div>
-    <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1">
+    <div class="modal-body login-body">
+      <form class="login-form"
+        onsubmit="event.preventDefault(); login_user($('#login-username').val(), $('#login-password').val());"
+        autocomplete="off">
+        <input type="input" id="login-username" name="username-login" placeholder="Username" autocomplete="">
+        </br></br>
+        <input type="password" id="login-password" name="password-login" placeholder="Password" autocomplete="nope">
+        </br></br>
+        <button class="btn-login">LogIn</button>
+        <p class="er-msg-login">Invalid Username and Password</p>
+        <div style="margin-top: 10px"><a href="" style="color:blue">Forgot Password?</a></div>
+        <div style="margin-top: 10px;"><a href="/shop/signup/" style="color:blue">New User? SignUp</a></div>
+      </form>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+  </div>
+</div>
 {% endblock %}
 {% block jquery %}
-
 {% endblock %}

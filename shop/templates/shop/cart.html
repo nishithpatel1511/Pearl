@@ -1,24 +1,32 @@
 {% extends 'shop/basics.html' %}
 
+{% block css %}
+<style>
+    .checkout-btn{
+        border-radius: 25px;
+    }
+</style>
+{% endblock %}
 {% block body %}
 
     <table class="table" style="width: 60%;" align="center">
         <thead>
+            <th></th>
             <th>Product Name</th>
             <th>Price</th>
             <th>Qty</th>
             <th>Options</th>
             <th></th>
         </thead>
-        <tfoot>
-            <td></td>
-            <td></td>
-            <td><b>Total:</b> {{cart.total}}</td>
-            <td></td>
-            <td></td>
-        </tfoot>
+        
+        
         {% for item in cart.cart_items.all %}
             <tr>
+                <td>
+                    <div>
+                        <input class="form-check-input" name="selectforcheckout" type="checkbox" id="checkboxNoLabel" value="{{item.id}}" aria-label="selectforcheckout">
+                    </div>
+                </td>
                 <td>{{item.product.product_name}}</td>
                 <td>{{item.product.price}}</td>
                 <td>{{item.quantity}}</td>
@@ -26,6 +34,12 @@
                 <td><a href="{% url 'cartupdate' item.product.slug %}?qty=0&item={{item.id}}">Remove</a></td>
             </tr>
         {% endfor %}
+        <tr>
+            <td colspan="6" align="center"><b>Total:</b> {{cart.total}}</td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center"><button type="button" class="btn btn-success checkout-btn">Checkout (Amount: {{cart.total}})</button></td>
+        </tr>
     </table>
 
 {% endblock %}

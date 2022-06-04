@@ -102,7 +102,7 @@
 {% block body %}
 <h2 class="cid-heading">Create Your Pearl Id</h2>
 {% csrf_token %}
-<form action="/shop/signup/" autocomplete="off" method="post" class="signup-form">
+<form action="{% url 'loginpage' %}" autocomplete="off" method="post" class="signup-form">
     {% csrf_token %}
     <input type="input" id="fname-signup" name="firstname" placeholder="First Name">
     <p class="fname-signup er-msg-signup"></p></br>
