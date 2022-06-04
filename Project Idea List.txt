@@ -1,0 +1,17 @@
+For Sem 7
+--------------------Future Implementation--------------------
+Filter
+Search
+Group
+Mobile Responsive
+Price Variation
+Checkout payment gateway
+Update cart(product price as per variants, UI, etc...)
+User Profile page (including updation, deletion, reset password, varification)
+manage Orders
+Users reviews for the product
+Deployment on cloud
+Recommendation for product
+Fix Bugs
+Delivery Process Implementation
+-------------------------------------------------------------
