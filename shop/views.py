@@ -50,10 +50,11 @@ def signup(request):
     if request.method == "POST":
         i =request.POST
         add = Pearl_Users(first_name=i['firstname'], last_name=i['lastname'], username=i['username'],
-            password=make_password(i['password']), date_of_birth=i['date_of_birth'], country=i['country'],
-            mobile= (i['country-code']+i['mobile']), email= i['email'])
+            password=make_password(i['password']), date_of_birth=i['date_of_birth'], country=Country.objects.get(id = i['country']).country_name,
+            mobile= (Country.objects.get(id = i['country-code']).country_code+i['mobile']), email= i['email'])
         add.save()
-    return render(request, 'shop/signup.html')
+    
+    return render(request, 'shop/signup.html', {'country': Country.objects.all()})
 
 def username_validation(request):
     try:
@@ -101,7 +102,8 @@ def ajax_mobile_signup(request):
     if request.method == "POST":
         i = request.POST
         try:
-            user_mobile = Pearl_Users.objects.filter(mobile = i['mobile_signup'])[0]
+            cd = Country.objects.get(id = i['mobile_signup'].split()[0]).country_code
+            user_mobile = Pearl_Users.objects.get(mobile = cd+i['mobile_signup'].split()[1])
             return HttpResponse("invalid")
         except:
             return HttpResponse("valid")

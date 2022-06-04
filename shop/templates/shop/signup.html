@@ -110,7 +110,10 @@
     <p class="lname-signup er-msg-signup"></p></br>
     <select name="country" id="country-signup">
         <option disabled="true" selected="true">Select Your Country</option>
-        <option value="Afghanistan">Afghanistan</option>
+        {% for c in country %}
+            <option value="{{c.id}}">{{c.country_name}}</option>
+        {% endfor %}
+        <!-- <option value="Afghanistan">Afghanistan</option>
         <option value="Åland Islands">Åland Islands</option>
         <option value="Albania">Albania</option>
         <option value="Algeria">Algeria</option>
@@ -355,7 +358,7 @@
         <option value="Western Sahara">Western Sahara</option>
         <option value="Yemen">Yemen</option>
         <option value="Zambia">Zambia</option>
-        <option value="Zimbabwe">Zimbabwe</option>
+        <option value="Zimbabwe">Zimbabwe</option> -->
     </select>
     </br>
     <p class="country-signup er-msg-signup"></p></br>
@@ -375,9 +378,12 @@
     <p class="dob-signup er-msg-signup"></p></br>
 
     <div class="international-number-signup">
-        <select name="country-code" id="country-code-signup">
+        <select name="country-code" id="country-code-signup" disabled>
             <option disabled="true" selected="true" value="">code</option>
-            <option value="+93">+93 (Afghanistan)</option>
+            {% for c in country %}
+            <option value="{{c.id}}">{{c.country_code}}</option>
+            {% endfor %}
+            <!-- <option value="+93">+93 (Afghanistan)</option>
             <option value="+358">+358 (Åland Islands)</option>
             <option value="+355">+355 (Albania)</option>
             <option value="+213">+213 (Algeria)</option>
@@ -619,7 +625,7 @@
             <option value="+212">+212 (Western Sahara)</option>
             <option value="+967">+967 (Yemen)</option>
             <option value="+260">+260 (Zambia)</option>
-            <option value="+263">+263 (Zimbabwe)</option>
+            <option value="+263">+263 (Zimbabwe)</option> -->
         </select>
         <input type="number" id="mobile-signup" name="mobile" placeholder="Mobile No">
     </div><img class="mobile-loading" src="{% static 'shop/loading.gif' %}">
@@ -736,7 +742,7 @@
                             $('.mobile-loading').css("visibility","visible");
                         },
                         data:{
-                            mobile_signup: ($('#country-code-signup').val()+$('#mobile-signup').val())
+                            mobile_signup: ($('#country-code-signup').val()+" "+$('#mobile-signup').val())
                         },
                         success: function(data){
                             if(data == "invalid"){
@@ -888,6 +894,9 @@
             return false;
         }
     });
-
+    $(document).on("change", "#country-signup", function () {
+        $('#country-code-signup').removeAttr('disabled');
+        $('#country-code-signup').val($('#country-signup').val());    
+    });
 </script>
 {% endblock %}

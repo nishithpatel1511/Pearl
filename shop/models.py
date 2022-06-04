@@ -141,3 +141,9 @@ class CartItemVariant(models.Model):
 class CartItemColor(models.Model):
     item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='cart_item_color')
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name='cart_color_value')
+
+class Country(models.Model):
+    country_name = models.CharField(max_length=20)
+    country_code = models.CharField(max_length=4)
+    def __str__(self) -> str:
+        return self.country_name
