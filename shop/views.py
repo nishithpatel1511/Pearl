@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
-from matplotlib import category
 
 # from .models import Product, Pearl_Users, Cart, CartItem, CategoryVariant, Product, ProductColor, ProductVariantValue
 from .models import *
