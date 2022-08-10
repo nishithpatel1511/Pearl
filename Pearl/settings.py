@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f+zx%bkrm$j9*b2hw28$eus($#s!s%_2ln0!#uq!e9)*%e88+j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.43.181', '127.0.0.1', '192.168.0.107', '192.168.43.195', 'pearl-ecommerce.herokuapp.com']
 
@@ -120,8 +120,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'media/static')
 STATIC_URL = '/static/'
 
 # Default primary key field type
